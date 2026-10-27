@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" id="Defs_dopuski" name="Допуски прогона" namespace="demo.ctr" exporter="hand" exporterVersion="6.0">
+  <inputData id="ID_msg" name="Сообщение кнопки" />
+  <inputData id="ID_day" name="Сегодня понедельник?" />
+  <inputData id="ID_usl" name="Уточнение (что видно в задаче или файле)" />
+  <decision id="Dec_gate" name="Решение кнопки на воротах">
+    <decisionTable id="DT_gate" hitPolicy="FIRST">
+      <input id="DT_gate_in0" label="Шаг"><inputExpression id="DT_gate_ie0" typeRef="string"><text>shag</text></inputExpression></input>
+      <input id="DT_gate_in1" label="Источник"><inputExpression id="DT_gate_ie1" typeRef="string"><text>istochnik</text></inputExpression></input>
+      <input id="DT_gate_in2" label="Состояние"><inputExpression id="DT_gate_ie2" typeRef="string"><text>sostoyanie</text></inputExpression></input>
+      <output id="DT_gate_out0" label="Решение кнопки" name="reshenie" typeRef="string" />
+      <output id="DT_gate_out1" label="Группа данных" name="gruppa" typeRef="string" />
+      <output id="DT_gate_out2" label="На странице / в выводе" name="na_stranice" typeRef="string" />
+      <rule id="DT_gate_r01"><description>README, шаг 2</description>
+        <inputEntry id="DT_gate_r01_i0"><text>"2"</text></inputEntry>
+        <inputEntry id="DT_gate_r01_i1"><text>"Снимок"</text></inputEntry>
+        <inputEntry id="DT_gate_r01_i2"><text>"снимок не завершён, пустой, прошёл не по всем площадкам или нет доступов"</text></inputEntry>
+        <outputEntry id="DT_gate_r01_o0"><text>"стоп"</text></outputEntry>
+        <outputEntry id="DT_gate_r01_o1"><text>"скоропортящиеся"</text></outputEntry>
+        <outputEntry id="DT_gate_r01_o2"><text>"Стоп с причиной"</text></outputEntry>
+      </rule>
+      <rule id="DT_gate_r02"><description>README, шаги 2 и 6</description>
+        <inputEntry id="DT_gate_r02_i0"><text>"2"</text></inputEntry>
+        <inputEntry id="DT_gate_r02_i1"><text>"Снимок"</text></inputEntry>
+        <inputEntry id="DT_gate_r02_i2"><text>"сбой после снимка, файл снимка есть"</text></inputEntry>
+        <outputEntry id="DT_gate_r02_o0"><text>"предупреждение"</text></outputEntry>
+        <outputEntry id="DT_gate_r02_o1"><text>"скоропортящиеся"</text></outputEntry>
+        <outputEntry id="DT_gate_r02_o2"><text>"Вопрос «собирать?»; обложки вернёт перезапуск снимка в тот же день"</text></outputEntry>
+      </rule>
+      <rule id="DT_gate_r03"><description>README, шаг 2</description>
+        <inputEntry id="DT_gate_r03_i0"><text>"2"</text></inputEntry>
+        <inputEntry id="DT_gate_r03_i1"><text>"Сервер"</text></inputEntry>
+        <inputEntry id="DT_gate_r03_i2"><text>"не ответил (нет связи)"</text></inputEntry>
+        <outputEntry id="DT_gate_r03_o0"><text>"стоп"</text></outputEntry>
+        <outputEntry id="DT_gate_r03_o1"><text>"служебные"</text></outputEntry>
+        <outputEntry id="DT_gate_r03_o2"><text>"Свой стоп с причиной"</text></outputEntry>
+      </rule>
+      <rule id="DT_gate_r04"><description>README, ключи допуска</description>
+        <inputEntry id="DT_gate_r04_i0"><text>"3"</text></inputEntry>
+        <inputEntry id="DT_gate_r04_i1"><text>"Рынок ВБ"</text></inputEntry>
+        <inputEntry id="DT_gate_r04_i2"><text>"не собран, запуск с допуском «без рынка ВБ»"</text></inputEntry>
+        <outputEntry id="DT_gate_r04_o0"><text>"дальше"</text></outputEntry>
+        <outputEntry id="DT_gate_r04_o1"><text>"восстановимые"</text></outputEntry>
+        <outputEntry id="DT_gate_r04_o2"><text>"Без сравнения с рынком ВБ"</text></outputEntry>
+      </rule>
+      <rule id="DT_gate_r05"><description>README, шаги 3 и 6</description>
+        <inputEntry id="DT_gate_r05_i0"><text>"3"</text></inputEntry>
+        <inputEntry id="DT_gate_r05_i1"><text>"Рынок ВБ"</text></inputEntry>
+        <inputEntry id="DT_gate_r05_i2"><text>"не собран, без ключа"</text></inputEntry>
+        <outputEntry id="DT_gate_r05_o0"><text>"предупреждение"</text></outputEntry>
+        <outputEntry id="DT_gate_r05_o1"><text>"восстановимые"</text></outputEntry>
+        <outputEntry id="DT_gate_r05_o2"><text>"Вопрос «собирать?»; без сравнения с рынком ВБ"</text></outputEntry>
+      </rule>
+      <rule id="DT_gate_r06"><description>README, шаг 3; регламент ч. 2</description>
+        <inputEntry id="DT_gate_r06_i0"><text>"3"</text></inputEntry>
+        <inputEntry id="DT_gate_r06_i1"><text>"Рынок ВБ"</text></inputEntry>
+        <inputEntry id="DT_gate_r06_i2"><text>"площадка отказала по части предметов"</text></inputEntry>
+        <outputEntry id="DT_gate_r06_o0"><text>"предупреждение"</text></outputEntry>
+        <outputEntry id="DT_gate_r06_o1"><text>"восстановимые"</text></outputEntry>
+        <outputEntry id="DT_gate_r06_o2"><text>"«ПЛОЩАДКА ОТКАЗАЛА по предметам»; прогон идёт дальше"</text></outputEntry>
+      </rule>
+      <rule id="DT_gate_r07"><description>README, шаг 4</description>
+        <inputEntry id="DT_gate_r07_i0"><text>"4"</text></inputEntry>
+        <inputEntry id="DT_gate_r07_i1"><text>"Раскладка"</text></inputEntry>
+        <inputEntry id="DT_gate_r07_i2"><text>"оригинал занят (Excel, индексатор)"</text></inputEntry>
+        <outputEntry id="DT_gate_r07_o0"><text>"дальше"</text></outputEntry>
+        <outputEntry id="DT_gate_r07_o1"><text>"служебные"</text></outputEntry>
+        <outputEntry id="DT_gate_r07_o2"><text>"Файл разложен копией"</text></outputEntry>
+      </rule>
+      <rule id="DT_gate_r08"><description>README, шаг 4</description>
+        <inputEntry id="DT_gate_r08_i0"><text>"4"</text></inputEntry>
+        <inputEntry id="DT_gate_r08_i1"><text>"Раскладка"</text></inputEntry>
+        <inputEntry id="DT_gate_r08_i2"><text>"файл не читается или не перенёсся"</text></inputEntry>
+        <outputEntry id="DT_gate_r08_o0"><text>"стоп"</text></outputEntry>
+        <outputEntry id="DT_gate_r08_o1"><text>"служебные"</text></outputEntry>
+        <outputEntry id="DT_gate_r08_o2"><text>"«Заняты другим процессом» с причиной"</text></outputEntry>
+      </rule>
+      <rule id="DT_gate_r09"><description>код кнопки, ключ допуска</description>
+        <inputEntry id="DT_gate_r09_i0"><text>"5"</text></inputEntry>
+        <inputEntry id="DT_gate_r09_i1"><text>"Аналитика брендов Маркета"</text></inputEntry>
+        <inputEntry id="DT_gate_r09_i2"><text>"нет, запуск с допуском «без рынка Маркета»"</text></inputEntry>
+        <outputEntry id="DT_gate_r09_o0"><text>"дальше"</text></outputEntry>
+        <outputEntry id="DT_gate_r09_o1"><text>"восстановимые"</text></outputEntry>
+        <outputEntry id="DT_gate_r09_o2"><text>"«Рынок за неделю не выгружен»"</text></outputEntry>
+      </rule>
+      <rule id="DT_gate_r10"><description>код кнопки</description>
+        <inputEntry id="DT_gate_r10_i0"><text>"5"</text></inputEntry>
+        <inputEntry id="DT_gate_r10_i1"><text>"Аналитика брендов Маркета"</text></inputEntry>
+        <inputEntry id="DT_gate_r10_i2"><text>"нет или не принята, без ключа"</text></inputEntry>
+        <outputEntry id="DT_gate_r10_o0"><text>"стоп"</text></outputEntry>
+        <outputEntry id="DT_gate_r10_o1"><text>"восстановимые"</text></outputEntry>
+        <outputEntry id="DT_gate_r10_o2"><text>"«аналитика брендов Маркета не принята»"</text></outputEntry>
+      </rule>
+      <rule id="DT_gate_r11"><description>код кнопки; регламент ч. 3</description>
+        <inputEntry id="DT_gate_r11_i0"><text>"5"</text></inputEntry>
+        <inputEntry id="DT_gate_r11_i1"><text>"Рыночные выборки Ozon"</text></inputEntry>
+        <inputEntry id="DT_gate_r11_i2"><text>"не приняты"</text></inputEntry>
+        <outputEntry id="DT_gate_r11_o0"><text>"стоп"</text></outputEntry>
+        <outputEntry id="DT_gate_r11_o1"><text>"скоропортящиеся"</text></outputEntry>
+        <outputEntry id="DT_gate_r11_o2"><text>"«рыночные выборки Ozon не приняты»"</text></outputEntry>
+      </rule>
+      <rule id="DT_gate_r12"><description>код кнопки; регламент ч. 3</description>
+        <inputEntry id="DT_gate_r12_i0"><text>"5"</text></inputEntry>
+        <inputEntry id="DT_gate_r12_i1"><text>"Воронка ВБ"</text></inputEntry>
+        <inputEntry id="DT_gate_r12_i2"><text>"не сошлась с рынком ВБ или не принята"</text></inputEntry>
+        <outputEntry id="DT_gate_r12_o0"><text>"стоп"</text></outputEntry>
+        <outputEntry id="DT_gate_r12_o1"><text>"восстановимые"</text></outputEntry>
+        <outputEntry id="DT_gate_r12_o2"><text>"«воронка и рынок ВБ не сошлись» / «воронка ВБ не принята»"</text></outputEntry>
+      </rule>
+      <rule id="DT_gate_r13"><description>код кнопки</description>
+        <inputEntry id="DT_gate_r13_i0"><text>"5"</text></inputEntry>
+        <inputEntry id="DT_gate_r13_i1"><text>"Отчёт «Товары» Ozon"</text></inputEntry>
+        <inputEntry id="DT_gate_r13_i2"><text>"не принят"</text></inputEntry>
+        <outputEntry id="DT_gate_r13_o0"><text>"стоп"</text></outputEntry>
+        <outputEntry id="DT_gate_r13_o1"><text>"восстановимые"</text></outputEntry>
+        <outputEntry id="DT_gate_r13_o2"><text>"Перевыгрузить можно и завтра"</text></outputEntry>
+      </rule>
+      <rule id="DT_gate_r14"><description>README, правила кода</description>
+        <inputEntry id="DT_gate_r14_i0"><text>"5"</text></inputEntry>
+        <inputEntry id="DT_gate_r14_i1"><text>"Файл сервера"</text></inputEntry>
+        <inputEntry id="DT_gate_r14_i2"><text>"неопознанный штатный файл"</text></inputEntry>
+        <outputEntry id="DT_gate_r14_o0"><text>"предупреждение"</text></outputEntry>
+        <outputEntry id="DT_gate_r14_o1"><text>"служебные"</text></outputEntry>
+        <outputEntry id="DT_gate_r14_o2"><text>"Код 2 и вопрос «собирать?»"</text></outputEntry>
+      </rule>
+      <rule id="DT_gate_r15"><description>README, шаг 5</description>
+        <inputEntry id="DT_gate_r15_i0"><text>"5"</text></inputEntry>
+        <inputEntry id="DT_gate_r15_i1"><text>"Скрипт приёмки"</text></inputEntry>
+        <inputEntry id="DT_gate_r15_i2"><text>"файла нет"</text></inputEntry>
+        <outputEntry id="DT_gate_r15_o0"><text>"стоп"</text></outputEntry>
+        <outputEntry id="DT_gate_r15_o1"><text>"служебные"</text></outputEntry>
+        <outputEntry id="DT_gate_r15_o2"><text>"Стоп: данные не проверены"</text></outputEntry>
+      </rule>
+      <rule id="DT_gate_r16"><description>README, шаг 7</description>
+        <inputEntry id="DT_gate_r16_i0"><text>"7"</text></inputEntry>
+        <inputEntry id="DT_gate_r16_i1"><text>"Копия на сервер"</text></inputEntry>
+        <inputEntry id="DT_gate_r16_i2"><text>"не вышла"</text></inputEntry>
+        <outputEntry id="DT_gate_r16_o0"><text>"дальше"</text></outputEntry>
+        <outputEntry id="DT_gate_r16_o1"><text>"служебные"</text></outputEntry>
+        <outputEntry id="DT_gate_r16_o2"><text>"Не стоп"</text></outputEntry>
+      </rule>
+      <rule id="DT_gate_r17"><description>README, шаг 6</description>
+        <inputEntry id="DT_gate_r17_i0"><text>-</text></inputEntry>
+        <inputEntry id="DT_gate_r17_i1"><text>-</text></inputEntry>
+        <inputEntry id="DT_gate_r17_i2"><text>-</text></inputEntry>
+        <outputEntry id="DT_gate_r17_o0"><text>"дальше"</text></outputEntry>
+        <outputEntry id="DT_gate_r17_o1"><text>"—"</text></outputEntry>
+        <outputEntry id="DT_gate_r17_o2"><text>"«Вопрос не задавался: приёмки чистые»"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="Dec_act" name="Действие по регламенту">
+    <informationRequirement id="IR_gate"><requiredDecision href="#Dec_gate" /></informationRequirement>
+    <informationRequirement id="IR_msg"><requiredInput href="#ID_msg" /></informationRequirement>
+    <informationRequirement id="IR_day"><requiredInput href="#ID_day" /></informationRequirement>
+    <informationRequirement id="IR_usl"><requiredInput href="#ID_usl" /></informationRequirement>
+    <decisionTable id="DT_act" hitPolicy="FIRST">
+      <input id="DT_act_in0" label="Сигнал: кнопка, задача, страница"><inputExpression id="DT_act_ie0" typeRef="string"><text>soobshchenie</text></inputExpression></input>
+      <input id="DT_act_in1" label="Сегодня понедельник?"><inputExpression id="DT_act_ie1" typeRef="boolean"><text>ponedelnik</text></inputExpression></input>
+      <input id="DT_act_in2" label="Уточнение"><inputExpression id="DT_act_ie2" typeRef="string"><text>uslovie</text></inputExpression></input>
+      <output id="DT_act_out0" label="Действие" name="deystvie" typeRef="string" />
+      <output id="DT_act_out1" label="Сообщить владельцу?" name="vladelcu" typeRef="string" />
+      <output id="DT_act_out2" label="Когда" name="kogda" typeRef="string" />
+      <output id="DT_act_out3" label="Группа данных" name="gruppa" typeRef="string" />
+      <output id="DT_act_out4" label="Написать пользователям (нюанс недели)" name="polzovatelyam" typeRef="string" />
+      <rule id="DT_act_r01"><description>регламент, «Перед началом»</description>
+        <inputEntry id="DT_act_r01_i0"><text>"задачи «Сбор CTR» нет к 9:00"</text></inputEntry>
+        <inputEntry id="DT_act_r01_i1"><text>-</text></inputEntry>
+        <inputEntry id="DT_act_r01_i2"><text>-</text></inputEntry>
+        <outputEntry id="DT_act_r01_o0"><text>"Качать по задаче прошлой недели"</text></outputEntry>
+        <outputEntry id="DT_act_r01_o1"><text>"написать и не ждать ответа"</text></outputEntry>
+        <outputEntry id="DT_act_r01_o2"><text>"сразу"</text></outputEntry>
+        <outputEntry id="DT_act_r01_o3"><text>"служебные"</text></outputEntry>
+        <outputEntry id="DT_act_r01_o4"><text>"—"</text></outputEntry>
+      </rule>
+      <rule id="DT_act_r02"><description>README, шаг 0; регламент ч. 2</description>
+        <inputEntry id="DT_act_r02_i0"><text>"СКРИПТЫ ОБНОВИЛИСЬ"</text></inputEntry>
+        <inputEntry id="DT_act_r02_i1"><text>-</text></inputEntry>
+        <inputEntry id="DT_act_r02_i2"><text>-</text></inputEntry>
+        <outputEntry id="DT_act_r02_o0"><text>"Запустить кнопку ещё раз — приехало исправление, это не ошибка"</text></outputEntry>
+        <outputEntry id="DT_act_r02_o1"><text>"нет — справляемся сами"</text></outputEntry>
+        <outputEntry id="DT_act_r02_o2"><text>"сразу"</text></outputEntry>
+        <outputEntry id="DT_act_r02_o3"><text>"служебные"</text></outputEntry>
+        <outputEntry id="DT_act_r02_o4"><text>"—"</text></outputEntry>
+      </rule>
+      <rule id="DT_act_r03"><description>ч. 3</description>
+        <inputEntry id="DT_act_r03_i0"><text>"нет папки сбора"</text></inputEntry>
+        <inputEntry id="DT_act_r03_i1"><text>-</text></inputEntry>
+        <inputEntry id="DT_act_r03_i2"><text>-</text></inputEntry>
+        <outputEntry id="DT_act_r03_o0"><text>"Переименовать папку точно как в сообщении, запустить заново"</text></outputEntry>
+        <outputEntry id="DT_act_r03_o1"><text>"нет — справляемся сами"</text></outputEntry>
+        <outputEntry id="DT_act_r03_o2"><text>"сразу"</text></outputEntry>
+        <outputEntry id="DT_act_r03_o3"><text>"служебные"</text></outputEntry>
+        <outputEntry id="DT_act_r03_o4"><text>"—"</text></outputEntry>
+      </rule>
+      <rule id="DT_act_r04"><description>описание процесса, S1; владелец, 27.10</description>
+        <inputEntry id="DT_act_r04_i0"><text>"нет журнала снимка"</text></inputEntry>
+        <inputEntry id="DT_act_r04_i1"><text>true</text></inputEntry>
+        <inputEntry id="DT_act_r04_i2"><text>-</text></inputEntry>
+        <outputEntry id="DT_act_r04_o0"><text>"Владелец перезапускает снимок на сервере сегодня, потом кнопка заново. Ручных выгрузок взамен нет"</text></outputEntry>
+        <outputEntry id="DT_act_r04_o1"><text>"да — сразу"</text></outputEntry>
+        <outputEntry id="DT_act_r04_o2"><text>"сегодня"</text></outputEntry>
+        <outputEntry id="DT_act_r04_o3"><text>"скоропортящиеся"</text></outputEntry>
+        <outputEntry id="DT_act_r04_o4"><text>"—"</text></outputEntry>
+      </rule>
+      <rule id="DT_act_r05"><description>описание процесса, S1; владелец, 27.10</description>
+        <inputEntry id="DT_act_r05_i0"><text>"снимок прошёл не полностью"</text></inputEntry>
+        <inputEntry id="DT_act_r05_i1"><text>true</text></inputEntry>
+        <inputEntry id="DT_act_r05_i2"><text>-</text></inputEntry>
+        <outputEntry id="DT_act_r05_o0"><text>"Владелец перезапускает снимок на сервере сегодня, потом кнопка заново. Ручных выгрузок взамен нет"</text></outputEntry>
+        <outputEntry id="DT_act_r05_o1"><text>"да — сразу"</text></outputEntry>
+        <outputEntry id="DT_act_r05_o2"><text>"сегодня"</text></outputEntry>
+        <outputEntry id="DT_act_r05_o3"><text>"скоропортящиеся"</text></outputEntry>
+        <outputEntry id="DT_act_r05_o4"><text>"—"</text></outputEntry>
+      </rule>
+      <rule id="DT_act_r06"><description>ч. 3; описание процесса, S1</description>
+        <inputEntry id="DT_act_r06_i0"><text>"нет журнала снимка"</text></inputEntry>
+        <inputEntry id="DT_act_r06_i1"><text>false</text></inputEntry>
+        <inputEntry id="DT_act_r06_i2"><text>-</text></inputEntry>
+        <outputEntry id="DT_act_r06_o0"><text>"Снимок задним числом не взять. Дальше по части 6"</text></outputEntry>
+        <outputEntry id="DT_act_r06_o1"><text>"написать и не ждать ответа"</text></outputEntry>
+        <outputEntry id="DT_act_r06_o2"><text>"—"</text></outputEntry>
+        <outputEntry id="DT_act_r06_o3"><text>"скоропортящиеся"</text></outputEntry>
+        <outputEntry id="DT_act_r06_o4"><text>"Изменения карточек за неделю не сохранены: снимок не снялся"</text></outputEntry>
+      </rule>
+      <rule id="DT_act_r07"><description>ч. 3; описание процесса, S1</description>
+        <inputEntry id="DT_act_r07_i0"><text>"снимок прошёл не полностью"</text></inputEntry>
+        <inputEntry id="DT_act_r07_i1"><text>false</text></inputEntry>
+        <inputEntry id="DT_act_r07_i2"><text>-</text></inputEntry>
+        <outputEntry id="DT_act_r07_o0"><text>"Дальше по части 6"</text></outputEntry>
+        <outputEntry id="DT_act_r07_o1"><text>"написать и не ждать ответа"</text></outputEntry>
+        <outputEntry id="DT_act_r07_o2"><text>"—"</text></outputEntry>
+        <outputEntry id="DT_act_r07_o3"><text>"скоропортящиеся"</text></outputEntry>
+        <outputEntry id="DT_act_r07_o4"><text>"Изменения карточек за неделю — не по всем площадкам"</text></outputEntry>
+      </rule>
+      <rule id="DT_act_r08"><description>ч. 3</description>
+        <inputEntry id="DT_act_r08_i0"><text>"не забрались выгрузки сервера"</text></inputEntry>
+        <inputEntry id="DT_act_r08_i1"><text>-</text></inputEntry>
+        <inputEntry id="DT_act_r08_i2"><text>-</text></inputEntry>
+        <outputEntry id="DT_act_r08_o0"><text>"Продолжать: эти данные доберутся позже"</text></outputEntry>
+        <outputEntry id="DT_act_r08_o1"><text>"написать и не ждать ответа"</text></outputEntry>
+        <outputEntry id="DT_act_r08_o2"><text>"можно позже"</text></outputEntry>
+        <outputEntry id="DT_act_r08_o3"><text>"восстановимые"</text></outputEntry>
+        <outputEntry id="DT_act_r08_o4"><text>"—"</text></outputEntry>
+      </rule>
+      <rule id="DT_act_r09"><description>ч. 3</description>
+        <inputEntry id="DT_act_r09_i0"><text>"рыночные выборки Ozon не приняты"</text></inputEntry>
+        <inputEntry id="DT_act_r09_i1"><text>true</text></inputEntry>
+        <inputEntry id="DT_act_r09_i2"><text>-</text></inputEntry>
+        <outputEntry id="DT_act_r09_o0"><text>"Перевыгрузить: снять фильтр «Мои товары», проверить категорию и 7 дней"</text></outputEntry>
+        <outputEntry id="DT_act_r09_o1"><text>"нет — справляемся сами"</text></outputEntry>
+        <outputEntry id="DT_act_r09_o2"><text>"сегодня"</text></outputEntry>
+        <outputEntry id="DT_act_r09_o3"><text>"скоропортящиеся"</text></outputEntry>
+        <outputEntry id="DT_act_r09_o4"><text>"—"</text></outputEntry>
+      </rule>
+      <rule id="DT_act_r10"><description>ч. 3</description>
+        <inputEntry id="DT_act_r10_i0"><text>"рыночные выборки Ozon не приняты"</text></inputEntry>
+        <inputEntry id="DT_act_r10_i1"><text>false</text></inputEntry>
+        <inputEntry id="DT_act_r10_i2"><text>-</text></inputEntry>
+        <outputEntry id="DT_act_r10_o0"><text>"Неделю рынка Ozon уже не собрать. Дальше по части 6"</text></outputEntry>
+        <outputEntry id="DT_act_r10_o1"><text>"написать и не ждать ответа"</text></outputEntry>
+        <outputEntry id="DT_act_r10_o2"><text>"—"</text></outputEntry>
+        <outputEntry id="DT_act_r10_o3"><text>"скоропортящиеся"</text></outputEntry>
+        <outputEntry id="DT_act_r10_o4"><text>"Ozon: сравнения с рынком за неделю нет — окно площадки ушло"</text></outputEntry>
+      </rule>
+      <rule id="DT_act_r11"><description>ч. 3</description>
+        <inputEntry id="DT_act_r11_i0"><text>"аналитика брендов Маркета не принята"</text></inputEntry>
+        <inputEntry id="DT_act_r11_i1"><text>-</text></inputEntry>
+        <inputEntry id="DT_act_r11_i2"><text>"категории не было в поиске"</text></inputEntry>
+        <outputEntry id="DT_act_r11_o0"><text>"Пробовать в следующий понедельник; появится — пересобрать неделю"</text></outputEntry>
+        <outputEntry id="DT_act_r11_o1"><text>"написать и не ждать ответа"</text></outputEntry>
+        <outputEntry id="DT_act_r11_o2"><text>"—"</text></outputEntry>
+        <outputEntry id="DT_act_r11_o3"><text>"восстановимые"</text></outputEntry>
+        <outputEntry id="DT_act_r11_o4"><text>"Маркет: категория не отдаётся площадкой; вернётся — восполним"</text></outputEntry>
+      </rule>
+      <rule id="DT_act_r12"><description>ч. 3</description>
+        <inputEntry id="DT_act_r12_i0"><text>"аналитика брендов Маркета не принята"</text></inputEntry>
+        <inputEntry id="DT_act_r12_i1"><text>-</text></inputEntry>
+        <inputEntry id="DT_act_r12_i2"><text>-</text></inputEntry>
+        <outputEntry id="DT_act_r12_o0"><text>"Перевыгрузить"</text></outputEntry>
+        <outputEntry id="DT_act_r12_o1"><text>"нет — справляемся сами"</text></outputEntry>
+        <outputEntry id="DT_act_r12_o2"><text>"можно завтра"</text></outputEntry>
+        <outputEntry id="DT_act_r12_o3"><text>"восстановимые"</text></outputEntry>
+        <outputEntry id="DT_act_r12_o4"><text>"—"</text></outputEntry>
+      </rule>
+      <rule id="DT_act_r13"><description>ч. 3</description>
+        <inputEntry id="DT_act_r13_i0"><text>"в папке недели лежит не то или не там"</text></inputEntry>
+        <inputEntry id="DT_act_r13_i1"><text>-</text></inputEntry>
+        <inputEntry id="DT_act_r13_i2"><text>-</text></inputEntry>
+        <outputEntry id="DT_act_r13_o0"><text>"Найти файл из сообщения; обычно выгрузка за другой период"</text></outputEntry>
+        <outputEntry id="DT_act_r13_o1"><text>"нет — справляемся сами"</text></outputEntry>
+        <outputEntry id="DT_act_r13_o2"><text>"сразу"</text></outputEntry>
+        <outputEntry id="DT_act_r13_o3"><text>"служебные"</text></outputEntry>
+        <outputEntry id="DT_act_r13_o4"><text>"—"</text></outputEntry>
+      </rule>
+      <rule id="DT_act_r14"><description>ч. 3</description>
+        <inputEntry id="DT_act_r14_i0"><text>"воронка и рынок ВБ не сошлись"</text></inputEntry>
+        <inputEntry id="DT_act_r14_i1"><text>-</text></inputEntry>
+        <inputEntry id="DT_act_r14_i2"><text>"период воронки не ровно 7 дней"</text></inputEntry>
+        <outputEntry id="DT_act_r14_o0"><text>"Исправить период, перевыгрузить воронку"</text></outputEntry>
+        <outputEntry id="DT_act_r14_o1"><text>"нет — справляемся сами"</text></outputEntry>
+        <outputEntry id="DT_act_r14_o2"><text>"сразу"</text></outputEntry>
+        <outputEntry id="DT_act_r14_o3"><text>"восстановимые"</text></outputEntry>
+        <outputEntry id="DT_act_r14_o4"><text>"—"</text></outputEntry>
+      </rule>
+      <rule id="DT_act_r15"><description>ч. 3</description>
+        <inputEntry id="DT_act_r15_i0"><text>"воронка и рынок ВБ не сошлись"</text></inputEntry>
+        <inputEntry id="DT_act_r15_i1"><text>-</text></inputEntry>
+        <inputEntry id="DT_act_r15_i2"><text>-</text></inputEntry>
+        <outputEntry id="DT_act_r15_o0"><text>"Перевыгрузить воронку и СРАЗУ запустить кнопку"</text></outputEntry>
+        <outputEntry id="DT_act_r15_o1"><text>"нет — справляемся сами"</text></outputEntry>
+        <outputEntry id="DT_act_r15_o2"><text>"сразу"</text></outputEntry>
+        <outputEntry id="DT_act_r15_o3"><text>"восстановимые"</text></outputEntry>
+        <outputEntry id="DT_act_r15_o4"><text>"—"</text></outputEntry>
+      </rule>
+      <rule id="DT_act_r16"><description>ч. 3</description>
+        <inputEntry id="DT_act_r16_i0"><text>"воронка ВБ не принята"</text></inputEntry>
+        <inputEntry id="DT_act_r16_i1"><text>-</text></inputEntry>
+        <inputEntry id="DT_act_r16_i2"><text>-</text></inputEntry>
+        <outputEntry id="DT_act_r16_o0"><text>"Проверить период воронки: ровно 7 дней"</text></outputEntry>
+        <outputEntry id="DT_act_r16_o1"><text>"нет — справляемся сами"</text></outputEntry>
+        <outputEntry id="DT_act_r16_o2"><text>"сразу"</text></outputEntry>
+        <outputEntry id="DT_act_r16_o3"><text>"восстановимые"</text></outputEntry>
+        <outputEntry id="DT_act_r16_o4"><text>"—"</text></outputEntry>
+      </rule>
+      <rule id="DT_act_r17"><description>ч. 3</description>
+        <inputEntry id="DT_act_r17_i0"><text>"файлы заняты другим процессом"</text></inputEntry>
+        <inputEntry id="DT_act_r17_i1"><text>-</text></inputEntry>
+        <inputEntry id="DT_act_r17_i2"><text>-</text></inputEntry>
+        <outputEntry id="DT_act_r17_o0"><text>"Закрыть Excel и проводник на «Загрузках», минута, запустить заново"</text></outputEntry>
+        <outputEntry id="DT_act_r17_o1"><text>"нет — справляемся сами"</text></outputEntry>
+        <outputEntry id="DT_act_r17_o2"><text>"сразу"</text></outputEntry>
+        <outputEntry id="DT_act_r17_o3"><text>"служебные"</text></outputEntry>
+        <outputEntry id="DT_act_r17_o4"><text>"—"</text></outputEntry>
+      </rule>
+      <rule id="DT_act_r18"><description>ч. 3</description>
+        <inputEntry id="DT_act_r18_i0"><text>"сборка витрины не прошла"</text></inputEntry>
+        <inputEntry id="DT_act_r18_i1"><text>-</text></inputEntry>
+        <inputEntry id="DT_act_r18_i2"><text>-</text></inputEntry>
+        <outputEntry id="DT_act_r18_o0"><text>"Данные разложены, ничего не потеряно"</text></outputEntry>
+        <outputEntry id="DT_act_r18_o1"><text>"написать, переслать журнал"</text></outputEntry>
+        <outputEntry id="DT_act_r18_o2"><text>"витрина позже"</text></outputEntry>
+        <outputEntry id="DT_act_r18_o3"><text>"служебные"</text></outputEntry>
+        <outputEntry id="DT_act_r18_o4"><text>"—"</text></outputEntry>
+      </rule>
+      <rule id="DT_act_r19"><description>ч. 2</description>
+        <inputEntry id="DT_act_r19_i0"><text>"площадка отказала по предметам"</text></inputEntry>
+        <inputEntry id="DT_act_r19_i1"><text>-</text></inputEntry>
+        <inputEntry id="DT_act_r19_i2"><text>-</text></inputEntry>
+        <outputEntry id="DT_act_r19_o0"><text>"Не остановка: прогон идёт дальше"</text></outputEntry>
+        <outputEntry id="DT_act_r19_o1"><text>"после прогона — какие предметы"</text></outputEntry>
+        <outputEntry id="DT_act_r19_o2"><text>"—"</text></outputEntry>
+        <outputEntry id="DT_act_r19_o3"><text>"восстановимые"</text></outputEntry>
+        <outputEntry id="DT_act_r19_o4"><text>"ВБ: по части предметов рынка нет — площадка отказала"</text></outputEntry>
+      </rule>
+      <rule id="DT_act_r20"><description>ч. 2</description>
+        <inputEntry id="DT_act_r20_i0"><text>"рынок ВБ: не вышло"</text></inputEntry>
+        <inputEntry id="DT_act_r20_i1"><text>-</text></inputEntry>
+        <inputEntry id="DT_act_r20_i2"><text>-</text></inputEntry>
+        <outputEntry id="DT_act_r20_o0"><text>"Не остановка: доскачать руками, положить куда скажет чат, перезапуск"</text></outputEntry>
+        <outputEntry id="DT_act_r20_o1"><text>"нет — справляемся сами"</text></outputEntry>
+        <outputEntry id="DT_act_r20_o2"><text>"можно позже"</text></outputEntry>
+        <outputEntry id="DT_act_r20_o3"><text>"восстановимые"</text></outputEntry>
+        <outputEntry id="DT_act_r20_o4"><text>"ВБ: сравнение с рынком появится после добора"</text></outputEntry>
+      </rule>
+      <rule id="DT_act_r21"><description>владелец, 27.10</description>
+        <inputEntry id="DT_act_r21_i0"><text>"некому запустить кнопку сегодня"</text></inputEntry>
+        <inputEntry id="DT_act_r21_i1"><text>-</text></inputEntry>
+        <inputEntry id="DT_act_r21_i2"><text>-</text></inputEntry>
+        <outputEntry id="DT_act_r21_o0"><text>"Страховочная выгрузка рынка ВБ руками; кнопку — когда оператор на месте"</text></outputEntry>
+        <outputEntry id="DT_act_r21_o1"><text>"написать и не ждать ответа"</text></outputEntry>
+        <outputEntry id="DT_act_r21_o2"><text>"сегодня"</text></outputEntry>
+        <outputEntry id="DT_act_r21_o3"><text>"восстановимые"</text></outputEntry>
+        <outputEntry id="DT_act_r21_o4"><text>"—"</text></outputEntry>
+      </rule>
+      <rule id="DT_act_r22"><description>владелец, 27.10</description>
+        <inputEntry id="DT_act_r22_i0"><text>"не успеваем до 17:00"</text></inputEntry>
+        <inputEntry id="DT_act_r22_i1"><text>-</text></inputEntry>
+        <inputEntry id="DT_act_r22_i2"><text>-</text></inputEntry>
+        <outputEntry id="DT_act_r22_o0"><text>"Скоропортящееся собрано? Витрину — на следующий рабочий день"</text></outputEntry>
+        <outputEntry id="DT_act_r22_o1"><text>"нет — справляемся сами"</text></outputEntry>
+        <outputEntry id="DT_act_r22_o2"><text>"завтра"</text></outputEntry>
+        <outputEntry id="DT_act_r22_o3"><text>"служебные"</text></outputEntry>
+        <outputEntry id="DT_act_r22_o4"><text>"—"</text></outputEntry>
+      </rule>
+      <rule id="DT_act_r23"><description>владелец, 27.10; задача «Изменилось»</description>
+        <inputEntry id="DT_act_r23_i0"><text>"площадка объединила категории или добавила новые"</text></inputEntry>
+        <inputEntry id="DT_act_r23_i1"><text>-</text></inputEntry>
+        <inputEntry id="DT_act_r23_i2"><text>-</text></inputEntry>
+        <outputEntry id="DT_act_r23_o0"><text>"Ничего: кнопка берёт список недели"</text></outputEntry>
+        <outputEntry id="DT_act_r23_o1"><text>"нет — справляемся сами"</text></outputEntry>
+        <outputEntry id="DT_act_r23_o2"><text>"—"</text></outputEntry>
+        <outputEntry id="DT_act_r23_o3"><text>"служебные"</text></outputEntry>
+        <outputEntry id="DT_act_r23_o4"><text>"Площадка изменила категории: что объединено, что добавлено"</text></outputEntry>
+      </rule>
+      <rule id="DT_act_r24"><description>владелец, 27.10</description>
+        <inputEntry id="DT_act_r24_i0"><text>"источник пропущен не первую неделю"</text></inputEntry>
+        <inputEntry id="DT_act_r24_i1"><text>-</text></inputEntry>
+        <inputEntry id="DT_act_r24_i2"><text>-</text></inputEntry>
+        <outputEntry id="DT_act_r24_o0"><text>"Только фиксация; каждый понедельник пробовать выгрузить прошлые недели; появились — переверстать недели с пробелами (в чате)"</text></outputEntry>
+        <outputEntry id="DT_act_r24_o1"><text>"нет — справляемся сами"</text></outputEntry>
+        <outputEntry id="DT_act_r24_o2"><text>"каждый понедельник"</text></outputEntry>
+        <outputEntry id="DT_act_r24_o3"><text>"восстановимые"</text></outputEntry>
+        <outputEntry id="DT_act_r24_o4"><text>"Источник не собирается с такой-то недели; восполним, когда площадка отдаст"</text></outputEntry>
+      </rule>
+      <rule id="DT_act_r25"><description>владелец, 27.10; витрина «что нового»</description>
+        <inputEntry id="DT_act_r25_i0"><text>"поднялась версия витрины"</text></inputEntry>
+        <inputEntry id="DT_act_r25_i1"><text>-</text></inputEntry>
+        <inputEntry id="DT_act_r25_i2"><text>-</text></inputEntry>
+        <outputEntry id="DT_act_r25_o0"><text>"Ничего"</text></outputEntry>
+        <outputEntry id="DT_act_r25_o1"><text>"нет — справляемся сами"</text></outputEntry>
+        <outputEntry id="DT_act_r25_o2"><text>"—"</text></outputEntry>
+        <outputEntry id="DT_act_r25_o3"><text>"служебные"</text></outputEntry>
+        <outputEntry id="DT_act_r25_o4"><text>"Новое на странице — кнопка «что нового»"</text></outputEntry>
+      </rule>
+      <rule id="DT_act_r26"><description>ч. 6</description>
+        <inputEntry id="DT_act_r26_i0"><text>-</text></inputEntry>
+        <inputEntry id="DT_act_r26_i1"><text>-</text></inputEntry>
+        <inputEntry id="DT_act_r26_i2"><text>-</text></inputEntry>
+        <outputEntry id="DT_act_r26_o0"><text>"Доделать что можно, сложить на Диск, записать шаг и текст на экране, закрыть понедельник"</text></outputEntry>
+        <outputEntry id="DT_act_r26_o1"><text>"написать и не ждать ответа"</text></outputEntry>
+        <outputEntry id="DT_act_r26_o2"><text>"сегодня"</text></outputEntry>
+        <outputEntry id="DT_act_r26_o3"><text>"—"</text></outputEntry>
+        <outputEntry id="DT_act_r26_o4"><text>"—"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="DRD_dopuski">
+      <dmndi:DMNShape id="Dec_gate_di" dmnElementRef="Dec_gate"><dc:Bounds height="80" width="200" x="160" y="100" /></dmndi:DMNShape>
+      <dmndi:DMNShape id="Dec_act_di" dmnElementRef="Dec_act"><dc:Bounds height="80" width="200" x="480" y="100" /></dmndi:DMNShape>
+      <dmndi:DMNShape id="ID_msg_di" dmnElementRef="ID_msg"><dc:Bounds height="45" width="150" x="330" y="280" /></dmndi:DMNShape>
+      <dmndi:DMNShape id="ID_day_di" dmnElementRef="ID_day"><dc:Bounds height="45" width="150" x="505" y="280" /></dmndi:DMNShape>
+      <dmndi:DMNShape id="ID_usl_di" dmnElementRef="ID_usl"><dc:Bounds height="45" width="170" x="680" y="280" /></dmndi:DMNShape>
+      <dmndi:DMNEdge id="IR_gate_di" dmnElementRef="IR_gate"><di:waypoint x="360" y="140" /><di:waypoint x="480" y="140" /></dmndi:DMNEdge>
+      <dmndi:DMNEdge id="IR_msg_di" dmnElementRef="IR_msg"><di:waypoint x="405" y="280" /><di:waypoint x="530" y="180" /></dmndi:DMNEdge>
+      <dmndi:DMNEdge id="IR_day_di" dmnElementRef="IR_day"><di:waypoint x="580" y="280" /><di:waypoint x="580" y="180" /></dmndi:DMNEdge>
+      <dmndi:DMNEdge id="IR_usl_di" dmnElementRef="IR_usl"><di:waypoint x="765" y="280" /><di:waypoint x="630" y="180" /></dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>
