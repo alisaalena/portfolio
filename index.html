@@ -1,0 +1,610 @@
+<title>Кейсы AI-автоматизации</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: портфолио как комплект чертёжных листов — у каждого кейса свой лист со штампом (срок, роль, стек), экран-демо внутри листа */
+:root{
+  --paper:#F3F5F4; --sheet:#FFFFFF; --ink:#1B2126; --muted:#5D6870; --line:#CDD4D3; --hair:#E3E8E7;
+  --accent:#2C5C88; --accent-soft:#E3ECF5; --warn:#B4651C; --warn-soft:#F8EADB; --good:#2F7A52; --good-soft:#E1F1E7; --bad:#B23B3B; --bad-soft:#F6E1E1;
+  --f-display:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Golos Text",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#12161A; --sheet:#1A2026; --ink:#E3E8E6; --muted:#97A3A9; --line:#344049; --hair:#27303A;
+  --accent:#86AEDB; --accent-soft:#1E3247; --warn:#E3A15E; --warn-soft:#3A2A1A; --good:#7CC79C; --good-soft:#183326; --bad:#EB8B8B; --bad-soft:#3A1E1E; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#12161A; --sheet:#1A2026; --ink:#E3E8E6; --muted:#97A3A9; --line:#344049; --hair:#27303A;
+  --accent:#86AEDB; --accent-soft:#1E3247; --warn:#E3A15E; --warn-soft:#3A2A1A; --good:#7CC79C; --good-soft:#183326; --bad:#EB8B8B; --bad-soft:#3A1E1E; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font:16px/1.55 var(--f-body);margin:0}
+.wrap{max-width:1080px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:40px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(30px,5vw,46px);font-weight:700;letter-spacing:.005em}
+h2{font-size:clamp(24px,3.4vw,32px);font-weight:700}
+h3{font-size:15px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+p{margin:0;max-width:68ch}
+a{color:var(--accent)}
+.mono{font-family:var(--f-mono);font-size:13px;font-variant-numeric:tabular-nums}
+.label{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* шапка */
+.head{display:grid;gap:18px}
+.head .lead{font-size:18px;color:var(--ink)}
+.head .sub{color:var(--muted)}
+.contacts{display:flex;flex-wrap:wrap;gap:8px 20px}
+.note{font-size:13.5px;color:var(--muted);border-left:2px solid var(--line);padding-left:12px}
+
+/* перечень листов */
+.index{border:1px solid var(--line);background:var(--sheet)}
+.index ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.index li{border-top:1px solid var(--hair);border-right:1px solid var(--hair)}
+.index a{display:grid;grid-template-columns:44px 1fr;gap:8px;padding:12px 14px;text-decoration:none;color:var(--ink)}
+.index a:hover{background:var(--accent-soft)}
+.index .n{font-family:var(--f-mono);color:var(--accent);font-size:13px;padding-top:2px}
+.index-cap{display:flex;justify-content:space-between;padding:10px 14px}
+
+/* лист */
+.sheet{background:var(--sheet);border:1px solid var(--line);position:relative}
+.sheet-body{padding:28px clamp(16px,3vw,32px) 32px;display:grid;gap:22px}
+.sheet-top{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline}
+.sheet-top .no{font-family:var(--f-mono);color:var(--accent);font-size:13px}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px 32px}
+.cols > div{min-width:0;display:grid;gap:8px;align-content:start}
+ul.plain{margin:0;padding-left:18px;display:grid;gap:4px}
+.facts{display:flex;flex-wrap:wrap;gap:10px}
+.fact{border:1px solid var(--line);padding:8px 12px;min-width:120px}
+.fact b{display:block;font-family:var(--f-display);font-size:24px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.1}
+.fact span{font-size:12.5px;color:var(--muted)}
+
+/* штамп */
+.stamp{border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.stamp div{padding:9px 14px;border-right:1px solid var(--hair);min-width:0}
+.stamp div:last-child{border-right:0}
+.stamp b{display:block;font-weight:500;font-size:13.5px}
+
+/* экран-демо */
+.screen{border:1px solid var(--line);background:var(--paper)}
+.screen-bar{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:8px 12px;border-bottom:1px solid var(--line)}
+.screen-in{padding:14px;display:grid;gap:12px;min-width:0}
+.scroll{overflow-x:auto}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:500 11.5px/1 var(--f-mono);letter-spacing:.05em;text-transform:uppercase;padding:8px 10px;border:1px solid var(--line);background:var(--sheet);color:var(--ink);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--sheet);border-color:var(--ink)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th{font:500 10.5px/1.3 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:left;padding:8px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:9px 8px;border-bottom:1px solid var(--hair);vertical-align:middle}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;font-family:var(--f-mono);font-size:12.5px;white-space:nowrap}
+tr.row{cursor:pointer}
+tr.row:hover td{background:var(--accent-soft)}
+.ctr-bad{background:var(--warn-soft)}
+.tag{display:inline-block;font:500 10.5px/1 var(--f-mono);padding:4px 6px;margin:1px 2px 1px 0;border:1px solid currentColor;white-space:nowrap}
+.tag.warn{color:var(--warn)} .tag.good{color:var(--good)} .tag.bad{color:var(--bad)} .tag.mute{color:var(--muted)}
+.dev{display:flex;align-items:center;gap:8px;min-width:150px}
+.devbar{position:relative;flex:1;height:12px;border-left:0}
+.devbar::before{content:"";position:absolute;left:50%;top:-2px;bottom:-2px;width:1px;background:var(--muted)}
+.devbar i{position:absolute;top:2px;height:8px}
+.hist td{background:var(--sheet)}
+.hist-in{display:grid;grid-template-columns:repeat(auto-fit,minmax(56px,1fr));gap:6px;padding:6px 0}
+.wk{display:grid;gap:4px;justify-items:center;font-size:11px}
+.cover{width:40px;height:52px;border:1px solid var(--line);background:linear-gradient(160deg,var(--accent-soft),var(--sheet))}
+.cover.new{background:linear-gradient(160deg,var(--warn-soft),var(--sheet));outline:2px solid var(--warn);outline-offset:1px}
+.spark{width:100%;max-width:520px;height:auto}
+
+/* схемы */
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;counter-reset:st}
+.step{border:1px solid var(--line);background:var(--sheet);padding:10px 12px;display:grid;gap:4px;min-width:0}
+.step .t{font-family:var(--f-mono);font-size:12px;color:var(--accent)}
+.step b{font-weight:600;font-size:14px}
+.step span{font-size:13px;color:var(--muted)}
+.step.hl{border-color:var(--accent)}
+
+/* галерея портала */
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.card{border:1px solid var(--line);background:var(--sheet);display:grid;min-width:0}
+.ph{aspect-ratio:4/3;max-width:100%;background:repeating-linear-gradient(135deg,var(--hair) 0 6px,var(--sheet) 6px 12px);display:grid;place-items:center;font:500 11px var(--f-mono);color:var(--muted);border-bottom:1px solid var(--line)}
+.card .c{padding:8px 10px;display:grid;gap:3px;font-size:12.5px}
+.card .c b{font-size:13px;font-weight:600}
+.up{color:var(--good)} .down{color:var(--bad)}
+.verdict{border:1px solid var(--accent);background:var(--sheet);padding:14px 16px;display:grid;gap:10px}
+.verdict .v{font-family:var(--f-display);font-size:20px;font-weight:600}
+
+/* воронка */
+.bars{display:grid;gap:8px}
+.bar{display:grid;grid-template-columns:150px 1fr 40px;gap:10px;align-items:center;font-size:13.5px}
+.bar .track{height:14px;background:var(--hair)}
+.bar .fill{height:100%}
+@media (max-width:520px){.bar{grid-template-columns:110px 1fr 32px}}
+
+/* до/после */
+.ba{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.ba ol{margin:0;padding:0;list-style:none;display:grid;gap:4px}
+.ba li{display:grid;grid-template-columns:34px 1fr;gap:8px;font-size:13.5px;padding:6px 8px;border:1px solid var(--hair);background:var(--sheet)}
+.ba li .p{font-family:var(--f-mono);color:var(--muted)}
+.ba li.real{border-color:var(--warn)}
+.ba li.gap{border-style:dashed;color:var(--muted)}
+
+.fail{border:1px dashed var(--bad);padding:14px 16px;display:grid;gap:6px}
+.foot{color:var(--muted);font-size:13px;display:grid;gap:6px}
+@media (prefers-reduced-motion:no-preference){.chip,.index a,tr.row td{transition:background .15s,color .15s}}
+</style>
+
+<div class="wrap">
+
+<header class="head">
+  <span class="label">Портфолио · бизнес-анализ и AI-автоматизация · 2025–2026</span>
+  <h1>Кейсы AI-автоматизации на мебельном производстве</h1>
+  <p class="lead">Нахожу ручную рутину, пишу требования, собираю MVP с Claude Code и довожу их до работы в отделах. Ниже — семь проектов последнего года: что болело, что я сделала и как это устроено.</p>
+  <p class="sub">Компания — производитель корпусной мебели, 500+ сотрудников: интернет-магазин, B2B и маркетплейсы Ozon, Wildberries, Яндекс Маркет.</p>
+  <div class="contacts mono"><span>[email]</span><span>[telegram]</span><span>резюме: [ссылка]</span></div>
+  <p class="note">Название компании, магазины, товары, продавцы и все числа на экранах заменены. Экраны перерисованы на вымышленных данных и повторяют интерфейс настоящих инструментов. Цифры в фактах — счётчики масштаба и сроки, не коммерческие показатели.</p>
+</header>
+
+<nav class="index" aria-label="Перечень листов">
+  <div class="index-cap"><span class="label">Перечень листов</span><span class="label">7 листов</span></div>
+  <ol>
+    <li><a href="#ctr"><span class="n">01</span><span>Мониторинг CTR на трёх маркетплейсах</span></a></li>
+    <li><a href="#portal"><span class="n">02</span><span>Портал конкурентного анализа Ozon</span></a></li>
+    <li><a href="#matrix"><span class="n">03</span><span>AI-матрица и внедрение ИИ в отделах</span></a></li>
+    <li><a href="#hr"><span class="n">04</span><span>Подбор кандидатов через API hh.ru</span></a></li>
+    <li><a href="#sklady"><span class="n">05</span><span>Приоритет складов Ozon</span></a></li>
+    <li><a href="#docs"><span class="n">06</span><span>Документы бизнес-аналитика</span></a></li>
+    <li><a href="#safe"><span class="n">07</span><span>Безопасная работа с ИИ и API</span></a></li>
+  </ol>
+</nav>
+
+<!-- 01 CTR -->
+<section class="sheet" id="ctr">
+  <div class="sheet-body">
+    <div class="sheet-top"><span class="no">Лист 01</span><span class="label">Маркетплейсы · аналитика</span></div>
+    <h2>Мониторинг CTR карточек на трёх маркетплейсах</h2>
+    <div class="cols">
+      <div><h3>Что болело</h3>
+        <p>Менеджеры каждый понедельник вручную собирали CTR по своей площадке. Ozon, Wildberries и Яндекс Маркет отдают данные по-разному, формулы давали ошибки, Wildberries округляет CTR до целого. Сравнения с рынком не было, смену обложек фиксировали скриншотами. На площадку уходило до рабочего дня.</p></div>
+      <div><h3>Что сделала</h3>
+        <ul class="plain">
+          <li>Разобрала текущий процесс и требования трёх групп пользователей, составила паспорт правил и словарь метрик.</li>
+          <li>Рынок — медиана CTR категории в том же диапазоне показов, а не общая.</li>
+          <li>Сигналы: ниже рынка на 20%, падение CTR за неделю на 20%, мало показов, остаток меньше недели.</li>
+          <li>Ночные снимки карточек: смена обложки, фото, названия и цены видна в истории недели.</li>
+          <li>Кнопка «Понедельник» — менеджер запускает сбор сам, без разработчика.</li>
+        </ul></div>
+    </div>
+
+    <div class="screen" aria-label="Демо-экран витрины CTR">
+      <div class="screen-bar"><span class="label">Демо · витрина недели · Ozon</span><span class="label">данные вымышлены</span></div>
+      <div class="screen-in">
+        <div class="chips" role="group" aria-label="Готовые виды">
+          <button class="chip" id="v-all" aria-pressed="true" data-v="all">Все</button>
+          <button class="chip" id="v-low" aria-pressed="false" data-v="low">Ниже рынка</button>
+          <button class="chip" id="v-down" aria-pressed="false" data-v="down">CTR упал</button>
+          <button class="chip" id="v-up" aria-pressed="false" data-v="up">CTR вырос</button>
+          <button class="chip" id="v-few" aria-pressed="false" data-v="few">Мало показов</button>
+        </div>
+        <div class="scroll">
+          <table id="ctr-table">
+            <thead><tr><th>Товар</th><th>Категория</th><th class="num">Показы</th><th class="num">CTR</th><th class="num">± нед.</th><th class="num">Рынок кат.</th><th>Отклонение от рынка</th><th>Метки</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <p class="mono" style="color:var(--muted)">Нажмите на строку — откроется история по неделям с обложками.</p>
+      </div>
+    </div>
+
+    <div>
+      <h3 style="margin-bottom:10px">Как устроен понедельник</h3>
+      <div class="flow">
+        <div class="step"><span class="t">02:00 · сервер</span><b>Снимок карточек</b><span>обложки, цены, названия — единственное невосстановимое звено</span></div>
+        <div class="step"><span class="t">03:00 · сервер</span><b>Сбор по API</b><span>Ozon Seller, WB, Яндекс Маркет</span></div>
+        <div class="step"><span class="t">03:30 · сервер</span><b>Предпрогон</b><span>проверка, что всё пришло</span></div>
+        <div class="step hl"><span class="t">утро · менеджер</span><b>Кнопка, 8 шагов</b><span>выгрузки кабинетов → приёмки с кодами → сборка → выкладка с откатом</span></div>
+        <div class="step"><span class="t">~12 минут</span><b>Витрина недели</b><span>страница под паролем и сообщение менеджерам</span></div>
+      </div>
+    </div>
+
+    <div class="facts">
+      <div class="fact"><b>322</b><span>позиции под наблюдением</span></div>
+      <div class="fact"><b>3</b><span>площадки, у каждой своя шкала</span></div>
+      <div class="fact"><b>8 дней</b><span>от разбора до MVP</span></div>
+      <div class="fact"><b>9 недель</b><span>витрина в работе</span></div>
+      <div class="fact"><b>~12 мин</b><span>прогон вместо дня на менеджера</span></div>
+    </div>
+  </div>
+  <div class="stamp">
+    <div><span class="label">Срок</span><b>авг — окт 2026</b></div>
+    <div><span class="label">Роль</span><b>от идеи до поддержки</b></div>
+    <div><span class="label">Стек</span><b>Python, API маркетплейсов, Playwright, systemd, nginx, HTML/JS</b></div>
+    <div><span class="label">Версии</span><b>витрина 2.5 → 3.2</b></div>
+  </div>
+</section>
+
+<!-- 02 Портал -->
+<section class="sheet" id="portal">
+  <div class="sheet-body">
+    <div class="sheet-top"><span class="no">Лист 02</span><span class="label">Ассортимент · конкуренты</span></div>
+    <h2>Портал конкурентного анализа Ozon</h2>
+    <div class="cols">
+      <div><h3>Что болело</h3>
+        <p>Ozon не показывает динамику конкурентов. Отчёты кабинета ручные и разрозненные, сторонний сервис расходится с кабинетом. Решения о новых моделях принимались без картины рынка по тридцати с лишним категориям.</p></div>
+      <div><h3>Что сделала</h3>
+        <ul class="plain">
+          <li>Слой 1 — скрининг: в выборку попадают карточки с оборотом от 600 тыс. ₽ за 28 дней. Если товаров мало, порог снижается по лестнице 400 → 200 → 100.</li>
+          <li>Сигналы «Спрос не покрыт» и «Смотрят, не покупают», возраст карточки, расчётная цена за килограмм, сравнение периодов.</li>
+          <li>Слой 2 — решение по категории: вердикт, боли рынка из отзывов ТОП-10, гипотезы для дизайнеров и чек-лист по отделам.</li>
+          <li>Отдельный раздел — разведка категорий, где своих товаров ещё нет.</li>
+        </ul></div>
+    </div>
+
+    <div class="screen" aria-label="Демо-экран галереи категории">
+      <div class="screen-bar"><span class="label">Демо · слой 1 · категория «Комод»</span><span class="label">данные вымышлены</span></div>
+      <div class="screen-in">
+        <div class="chips" role="group" aria-label="Возраст карточки">
+          <button class="chip" id="a-any" aria-pressed="true" data-a="any">Любой возраст</button>
+          <button class="chip" id="a-new" aria-pressed="false" data-a="new">До 90 дней</button>
+          <button class="chip" id="a-mid" aria-pressed="false" data-a="mid">90–365</button>
+          <button class="chip" id="a-old" aria-pressed="false" data-a="old">Старше 365</button>
+          <button class="chip" id="a-gap" aria-pressed="false" data-a="gap">Спрос не покрыт</button>
+          <button class="chip" id="a-look" aria-pressed="false" data-a="look">Смотрят, не покупают</button>
+        </div>
+        <p class="mono" id="gal-count" style="color:var(--muted)"></p>
+        <div class="gal" id="gal"></div>
+      </div>
+    </div>
+
+    <div class="verdict">
+      <span class="label">Демо · слой 2 · решение по категории</span>
+      <span class="v">Усилить: смещаем фокус на комоды 100–120 см</span>
+      <div class="cols">
+        <div><h3>Боли рынка · из отзывов ТОП-10</h3><ul class="plain"><li>Ящики перекашиваются через полгода</li><li>Кромка сколота при доставке</li><li>В описании нет внутренних размеров ящика</li></ul></div>
+        <div><h3>Гипотезы для дизайнеров</h3><ul class="plain"><li>Направляющие полного выдвижения в базовой версии</li><li>Внутренние размеры на втором слайде</li><li>Угловая защита в упаковке — в инфографику</li></ul></div>
+        <div><h3>Чек-лист действий</h3><ul class="plain"><li>Дизайн — 2 задачи</li><li>Конструкторский отдел — 1</li><li>Контент — 1</li><li>Маркетплейсы — 1</li></ul></div>
+      </div>
+    </div>
+
+    <div class="flow">
+      <div class="step"><span class="t">1-е число · сервер</span><b>Кабинеты по API</b><span>товары, цены, FBO, FBS</span></div>
+      <div class="step"><span class="t">2-е число · кнопка</span><b>Рынок и отзывы</b><span>отчёты кабинета, сторонний сервис, 1С</span></div>
+      <div class="step"><span class="t">генераторы</span><b>Галереи и решения</b><span>статичный HTML</span></div>
+      <div class="step hl"><span class="t">человек</span><b>Публикация</b><span>сначала холостой прогон, потом выкладка</span></div>
+    </div>
+
+    <div class="facts">
+      <div class="fact"><b>33</b><span>категории в скрининге</span></div>
+      <div class="fact"><b>21</b><span>решение по категории</span></div>
+      <div class="fact"><b>11</b><span>чек-листов для отделов</span></div>
+      <div class="fact"><b>4</b><span>источника данных</span></div>
+      <div class="fact"><b>раз в месяц</b><span>автообновление</span></div>
+    </div>
+  </div>
+  <div class="stamp">
+    <div><span class="label">Срок</span><b>июнь — окт 2026</b></div>
+    <div><span class="label">Роль</span><b>методология, требования, сборка, поддержка</b></div>
+    <div><span class="label">Стек</span><b>Python, pandas, Ozon Seller API, systemd, HTML</b></div>
+    <div><span class="label">Правило</span><b>числа — раз в месяц, смысл — раз в квартал</b></div>
+  </div>
+</section>
+
+<!-- 03 Матрица -->
+<section class="sheet" id="matrix">
+  <div class="sheet-body">
+    <div class="sheet-top"><span class="no">Лист 03</span><span class="label">Внедрение ИИ · управление изменениями</span></div>
+    <h2>AI-матрица и внедрение ИИ в отделах</h2>
+    <div class="cols">
+      <div><h3>Что сделала</h3>
+        <ul class="plain">
+          <li>Провела интервью с руководителями подразделений и собрала матрицу «подразделение → задача → боль → решение → статус».</li>
+          <li>Составила дорожную карту на 12 недель: ИИ-ядро → единые правила работы с GPT → внедрение по отделам → политика использования ИИ и обучение → итоги.</li>
+          <li>Настраиваю для отделов проекты Claude, скиллы и коннекторы, подбираю инструменты и обучаю сотрудников.</li>
+        </ul></div>
+      <div><h3>Интервью по подразделениям</h3>
+        <div class="bars" aria-label="Статус интервью">
+          <div class="bar"><span>Завершены</span><div class="track"><div class="fill" style="width:25%;background:var(--good)"></div></div><span class="mono">2</span></div>
+          <div class="bar"><span>Частично</span><div class="track"><div class="fill" style="width:50%;background:var(--accent)"></div></div><span class="mono">4</span></div>
+          <div class="bar"><span>Запланированы</span><div class="track"><div class="fill" style="width:25%;background:var(--muted)"></div></div><span class="mono">2</span></div>
+        </div></div>
+    </div>
+
+    <div class="screen">
+      <div class="screen-bar"><span class="label">Фрагмент матрицы · переписан для портфолио</span><span class="label">без имён</span></div>
+      <div class="screen-in scroll">
+        <table>
+          <thead><tr><th>Подразделение</th><th>Задача</th><th>Боль</th><th>Решение</th><th>Статус</th></tr></thead>
+          <tbody>
+            <tr><td>Маркетплейсы</td><td>Еженедельный отчёт по CTR</td><td>ручной сбор, ошибки формул</td><td>витрина по кнопке</td><td><span class="tag good">работает</span></td></tr>
+            <tr><td>Дизайн</td><td>Обложки и слайды карточек</td><td>цикл карточки 16 дней при 3 днях работы</td><td>проекты Claude, генерация, учёт времени</td><td><span class="tag good">работает</span></td></tr>
+            <tr><td>ОТК</td><td>Обращения по качеству</td><td>уточнено на интервью</td><td>бот ОТК</td><td><span class="tag warn">в работе</span></td></tr>
+            <tr><td>Закупки</td><td>Сравнение предложений</td><td>уточняем на интервью</td><td>—</td><td><span class="tag mute">интервью</span></td></tr>
+            <tr><td>Продажи B2B</td><td>Поиск розничных партнёров</td><td>ручной поиск контактов</td><td>коннектор к картам</td><td><span class="tag bad">остановлен</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="facts">
+      <div class="fact"><b>3</b><span>департамента</span></div>
+      <div class="fact"><b>14</b><span>подразделений в матрице</span></div>
+      <div class="fact"><b>40</b><span>задач</span></div>
+      <div class="fact"><b>8 → 4</b><span>начинали внедрение → прижилось</span></div>
+    </div>
+
+    <div class="fail">
+      <h3 style="color:var(--bad)">Что не взлетело и почему</h3>
+      <p>Для B2B-продаж сделали коннектор к картографическому сервису: поиск контактов мебельных магазинов, ключи API выпущены, интерфейс MVP со скриптом звонка и статусами обзвона. Проект закрыли. Решило сопротивление сотрудников, а не техника. Из восьми отделов, где начинали внедрение, ИИ прижился в четырёх.</p>
+      <p>Вывод, с которым я теперь начинаю любое внедрение: сначала владелец процесса и его выгода, потом инструмент.</p>
+    </div>
+  </div>
+  <div class="stamp">
+    <div><span class="label">Срок</span><b>ноя 2025 — н.в.</b></div>
+    <div><span class="label">Роль</span><b>интервью, приоритизация, внедрение, обучение</b></div>
+    <div><span class="label">Инструменты</span><b>Claude, ChatGPT, Genspark, Kling</b></div>
+    <div><span class="label">Отделы</span><b>дизайн, экономика, SMM, e-commerce</b></div>
+  </div>
+</section>
+
+<!-- 04 HR -->
+<section class="sheet" id="hr">
+  <div class="sheet-body">
+    <div class="sheet-top"><span class="no">Лист 04</span><span class="label">HR · интеграция</span></div>
+    <h2>Подбор кандидатов через API hh.ru</h2>
+    <div class="cols">
+      <div><h3>Что сделала</h3>
+        <ul class="plain">
+          <li>Свой MCP-сервер к официальному API hh.ru: инструмент поиска резюме доступен прямо из Claude.</li>
+          <li>Проект Claude для работы с руководителями: бланк интервью о вакансии, регламент рекрутера из пяти шагов.</li>
+          <li>На выходе три результата: профиль роли, карточка вакансии в двух версиях и список кандидатов с процентом совпадения.</li>
+        </ul></div>
+      <div><h3>Пример: тимлид 1С-Битрикс</h3>
+        <ul class="plain">
+          <li>Внутренний термин «руководитель группы» перевели на язык рынка.</li>
+          <li>Нашли антипаттерны, например путаницу CRM-внедренцев с разработчиками сайтов.</li>
+          <li>Рекламу и аналитику предложили перенести из обязательных требований в желательные, иначе воронка сужалась в разы.</li>
+          <li>Ограничение описано прямо: API отдаёт только название резюме, стаж и город, поэтому процент совпадения — первичный скрининг.</li>
+        </ul></div>
+    </div>
+
+    <div class="flow">
+      <div class="step"><span class="t">день 1</span><b>Профиль роли</b><span>навыки, отрасли-доноры, маркеры и антипаттерны</span></div>
+      <div class="step"><span class="t">день 1</span><b>Вакансия A и Б</b><span>текст для публикации и поисковые строки</span></div>
+      <div class="step hl"><span class="t">день 2</span><b>3 волны · 33 запроса</b><span>город и вся Россия, дедупликация</span></div>
+      <div class="step"><span class="t">день 2</span><b>Каналы вне hh</b><span>студии-партнёры, профильные сообщества, рекомендации</span></div>
+      <div class="step"><span class="t">через 2 недели</span><b>2 собеседования</b><span>бланк оценки с единой шкалой</span></div>
+    </div>
+
+    <div>
+      <h3 style="margin-bottom:10px">Первая выдача · 21 кандидат</h3>
+      <div class="bars" aria-label="Воронка кандидатов">
+        <div class="bar"><span>Высокая (70–100%)</span><div class="track"><div class="fill" style="width:19%;background:var(--good)"></div></div><span class="mono">4</span></div>
+        <div class="bar"><span>Средняя (40–69%)</span><div class="track"><div class="fill" style="width:57%;background:var(--accent)"></div></div><span class="mono">12</span></div>
+        <div class="bar"><span>На вырост (до 39%)</span><div class="track"><div class="fill" style="width:24%;background:var(--muted)"></div></div><span class="mono">5</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="stamp">
+    <div><span class="label">Срок</span><b>апр 2026 — н.в.</b></div>
+    <div><span class="label">Роль</span><b>идея, интеграция, регламент, сопровождение HR</b></div>
+    <div><span class="label">Стек</span><b>Python, MCP, OAuth, API hh.ru, проекты Claude</b></div>
+    <div><span class="label">Сервер</span><b>MCP за nginx</b></div>
+  </div>
+</section>
+
+<!-- 05 Склады -->
+<section class="sheet" id="sklady">
+  <div class="sheet-body">
+    <div class="sheet-top"><span class="no">Лист 05</span><span class="label">Маркетплейсы · логистика</span></div>
+    <h2>Приоритет складов Ozon для пяти магазинов</h2>
+    <div class="cols">
+      <div><h3>Что болело</h3>
+        <p>Склад Real FBS стоял в приоритете сразу за FBS того же города. При остатке в одну штуку одна и та же единица числилась на двух методах, заказ падал на оба, часть заказа на Real FBS отменяли.</p></div>
+      <div><h3>Что сделала</h3>
+        <ul class="plain">
+          <li>Выяснила у менеджеров причину, сформулировала правило: сначала FBS и FBS КГТ всех городов по удалённости, затем Real FBS в том же порядке, DBS — прямо перед Real FBS своего города.</li>
+          <li>Скрипт пересчитывает шаблон кабинета во всех регионах. Отдельная независимая проверка — на pandas.</li>
+          <li>API для приоритетов у Ozon нет — файлы на загрузку для каждого магазина.</li>
+        </ul></div>
+    </div>
+    <div class="ba">
+      <div><span class="label">Было · регион «Город A»</span>
+        <ol>
+          <li><span class="p">1</span>FBS · Город A</li>
+          <li class="real"><span class="p">2</span>Real FBS · Город A — та же единица</li>
+          <li><span class="p">3</span>FBS · Город B</li>
+          <li class="real"><span class="p">4</span>Real FBS · Город B</li>
+          <li class="gap"><span class="p">…</span>и так по всем городам</li>
+        </ol></div>
+      <div><span class="label">Стало</span>
+        <ol>
+          <li><span class="p">1</span>FBS · Город A</li>
+          <li><span class="p">2</span>FBS · Город B</li>
+          <li class="gap"><span class="p">…</span>все FBS и FBS КГТ по удалённости</li>
+          <li><span class="p">25</span>DBS · Город A</li>
+          <li class="real"><span class="p">26</span>Real FBS · Город A</li>
+        </ol></div>
+    </div>
+    <div class="facts">
+      <div class="fact"><b>5</b><span>магазинов</span></div>
+      <div class="fact"><b>85–95%</b><span>ячеек приоритета изменено</span></div>
+      <div class="fact"><b>5 167 / 5 167</b><span>пар кабинет = расчёт</span></div>
+      <div class="fact"><b>0</b><span>нарушений правила</span></div>
+      <div class="fact"><b>день 1</b><span>пик заказов за 4 недели — в день загрузки</span></div>
+    </div>
+  </div>
+  <div class="stamp">
+    <div><span class="label">Срок</span><b>окт 2026</b></div>
+    <div><span class="label">Роль</span><b>анализ причины, правило, расчёт, проверка</b></div>
+    <div><span class="label">Стек</span><b>Python, openpyxl, pandas</b></div>
+    <div><span class="label">Дальше</span><b>сверка заказов через две недели</b></div>
+  </div>
+</section>
+
+<!-- 06 Документы -->
+<section class="sheet" id="docs">
+  <div class="sheet-body">
+    <div class="sheet-top"><span class="no">Лист 06</span><span class="label">Бизнес-анализ</span></div>
+    <h2>Документы бизнес-аналитика</h2>
+    <p>Требования пишу так, чтобы подрядчик мог оценить работу, а руководитель — принять решение. Три примера разной длины.</p>
+    <div class="cols">
+      <div><h3>ТЗ «Мониторинг партнёров»</h3>
+        <div class="facts"><div class="fact"><b>22</b><span>раздела</span></div><div class="fact"><b>10</b><span>таблиц</span></div></div>
+        <p>Отдельный раздел «где нужен ИИ, а где нет». Там, где хватает правила, модель не используется.</p></div>
+      <div><h3>Интеграция формы сайта с CRM</h3>
+        <div class="flow" style="grid-template-columns:1fr">
+          <div class="step"><b>Запрос</b><span>что хочет бизнес, своими словами</span></div>
+          <div class="step"><b>Технический бриф</b><span>поля, события, кто отвечает</span></div>
+          <div class="step hl"><b>ТЗ разработчику</b><span>лид создаётся в CRM автоматически</span></div>
+        </div></div>
+      <div><h3>Электронные каталоги на сайте</h3>
+        <ul class="plain">
+          <li>Паспорт проекта</li>
+          <li>Макет страницы в Google AI Studio — согласован с первого показа</li>
+          <li>ТЗ этапа 1 и этапа 2 (B2B-версия)</li>
+          <li>Протокол проекта, приёмка у подрядчика</li>
+        </ul></div>
+    </div>
+    <div class="cols">
+      <div><h3>Ещё</h3>
+        <ul class="plain">
+          <li>Собеседование технического руководителя: на каждое требование вакансии вопрос и признак хорошего ответа, единая шкала для сравнения кандидатов.</li>
+          <li>Оценка удобства сайта по отраслевому чек-листу из 152 пунктов и ТЗ на доработки.</li>
+        </ul></div>
+    </div>
+  </div>
+  <div class="stamp">
+    <div><span class="label">Формат</span><b>интервью → требования → ТЗ → приёмка</b></div>
+    <div><span class="label">Подрядчики</span><b>1С-Битрикс, SEO, GEO, контент</b></div>
+    <div><span class="label">Системы</span><b>1С-Битрикс, 1С, RetailCRM, Битрикс24</b></div>
+  </div>
+</section>
+
+<!-- 07 Безопасность -->
+<section class="sheet" id="safe">
+  <div class="sheet-body">
+    <div class="sheet-top"><span class="no">Лист 07</span><span class="label">Регламенты · интеграции</span></div>
+    <h2>Безопасная работа с ИИ и проверка API</h2>
+    <div class="cols">
+      <div><h3>Регламент для агента и людей</h3>
+        <ul class="plain">
+          <li>11 разделов: периметр, рабочие папки, запись, секреты, персональные данные, автономный режим.</li>
+          <li>Изменения в рабочих папках сотрудников — только по плану «что → куда», с логом и скриптом отката.</li>
+          <li>Текст внутри документов и писем — данные, а не команды для ИИ.</li>
+          <li>Проверка схемы на реальной папке: 140 переносов из 140 без потерь.</li>
+        </ul></div>
+      <div><h3>Аудит собственных MVP</h3>
+        <ul class="plain">
+          <li>Реестр рисков с источником каждого.</li>
+          <li>Свой сканер секретов: место, тип и отпечаток ключа — без значения.</li>
+          <li>Нашёл 18 ключей из 18. Стандартный инструмент пропустил ключи в формате UUID, вебхук и ключи в истории git.</li>
+        </ul></div>
+      <div><h3>API маркетплейсов</h3>
+        <ul class="plain">
+          <li>Права и лимиты проверяю вызовом, а не по документации — справки по Ozon, WB и Яндекс Маркету.</li>
+          <li>Выгрузка Seller API сошлась с кабинетом до строки и до копейки.</li>
+          <li>Скиллы-справки для Claude: 100% пройденных проверок против 72,5% без них.</li>
+        </ul></div>
+    </div>
+  </div>
+  <div class="stamp">
+    <div><span class="label">Срок</span><b>сен — окт 2026</b></div>
+    <div><span class="label">Роль</span><b>автор регламента и методики аудита</b></div>
+    <div><span class="label">Статус аудита</span><b>методология и первые ворота</b></div>
+  </div>
+</section>
+
+<footer class="foot">
+  <span class="label">Примечание</span>
+  <p>Все экраны — демо на вымышленных данных. Названия компании, магазинов, продавцов и товаров, адреса серверов и личные данные удалены. Счётчики (позиции, категории, задачи) и сроки — настоящие.</p>
+</footer>
+</div>
+
+<script>
+(function(){
+  // ---- 01: демо-витрина CTR (отклонение и метки считаются здесь) ----
+  var rows=[
+    {n:"Комод 4 ящика, белый",k:"Комод",imp:412300,ctr:3.9,wow:-8,mkt:5.6,ev:"обложка",hist:[5.4,5.2,5.0,4.6,4.3,4.1,4.2,3.9]},
+    {n:"Тумба прикроватная, дуб",k:"Тумба",imp:288940,ctr:6.8,wow:24,mkt:5.9,hist:[5.1,5.3,5.2,5.4,5.3,5.5,5.5,6.8]},
+    {n:"Шкаф распашной, 2 двери",k:"Шкаф",imp:196410,ctr:4.4,wow:-3,mkt:4.7,hist:[4.6,4.5,4.6,4.4,4.5,4.6,4.5,4.4]},
+    {n:"Стол письменный, графит",k:"Стол",imp:151780,ctr:2.9,wow:-22,mkt:4.1,hist:[4.0,3.9,4.1,3.8,3.9,3.8,3.7,2.9]},
+    {n:"Обувница узкая",k:"Обувница",imp:8420,ctr:5.1,wow:4,mkt:5.0,hist:[4.8,5.0,4.9,5.2,4.9,5.0,4.9,5.1]},
+    {n:"Стеллаж 5 полок",k:"Стеллаж",imp:97500,ctr:7.2,wow:11,mkt:6.1,stock:true,hist:[6.2,6.4,6.3,6.5,6.6,6.4,6.5,7.2]}
+  ];
+  var weeks=["нед 35","нед 36","нед 37","нед 38","нед 39","нед 40","нед 41","нед 42"];
+  rows.forEach(function(r){r.dev=Math.round((r.ctr/r.mkt-1)*100)});
+  function tags(r){
+    var t=[];
+    if(r.dev<=-20)t.push('<span class="tag warn">ниже рынка '+r.dev+'%</span>');
+    if(r.wow<=-20)t.push('<span class="tag bad">CTR упал</span>');
+    if(r.wow>=20)t.push('<span class="tag good">CTR вырос</span>');
+    if(r.imp<10000)t.push('<span class="tag mute">мало показов</span>');
+    if(r.stock)t.push('<span class="tag warn">остаток &lt; недели</span>');
+    if(r.ev)t.push('<span class="tag mute">сменилась '+r.ev+'</span>');
+    return t.join("");
+  }
+  var fmt=new Intl.NumberFormat("ru-RU");
+  function sign(x){return (x>0?"+":"")+x+"%"}
+  function devbar(d){
+    var w=Math.min(Math.abs(d),50); var col=d<0?"var(--warn)":"var(--good)";
+    var left=d<0?(50-w):50;
+    return '<div class="dev"><span class="mono" style="width:44px;text-align:right">'+sign(d)+'</span><div class="devbar"><i style="left:'+left+'%;width:'+w+'%;background:'+col+'"></i></div></div>';
+  }
+  function spark(h){
+    var W=520,H=90,p=24,min=2.5,max=7.5;
+    var x=function(i){return p+i*(W-2*p)/(h.length-1)}, y=function(v){return H-14-(v-min)/(max-min)*(H-28)};
+    var pts=h.map(function(v,i){return x(i).toFixed(1)+","+y(v).toFixed(1)}).join(" ");
+    var lab=h.map(function(v,i){return '<text x="'+x(i).toFixed(1)+'" y="'+(y(v)-7).toFixed(1)+'" text-anchor="middle" font-size="10" font-family="JetBrains Mono,monospace" fill="var(--muted)">'+v.toFixed(1)+'</text>'}).join("");
+    var last=h.length-1;
+    return '<svg class="spark" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="CTR по неделям"><polyline points="'+pts+'" fill="none" stroke="var(--accent)" stroke-width="2"/>'+lab+'<circle cx="'+x(last).toFixed(1)+'" cy="'+y(h[last]).toFixed(1)+'" r="4" fill="var(--accent)"/></svg>';
+  }
+  var tb=document.querySelector("#ctr-table tbody"), view="all";
+  function show(r){
+    if(view==="low")return r.dev<=-20; if(view==="down")return r.wow<=-20;
+    if(view==="up")return r.wow>=20; if(view==="few")return r.imp<10000; return true;
+  }
+  function render(){
+    tb.innerHTML="";
+    rows.filter(show).forEach(function(r,i){
+      var tr=document.createElement("tr"); tr.className="row"; tr.tabIndex=0;
+      tr.innerHTML='<td>'+r.n+'</td><td>'+r.k+'</td><td class="num">'+fmt.format(r.imp)+'</td><td class="num'+(r.dev<=-20?' ctr-bad':'')+'">'+r.ctr.toFixed(1)+'%</td><td class="num">'+sign(r.wow)+'</td><td class="num">'+r.mkt.toFixed(1)+'%</td><td>'+devbar(r.dev)+'</td><td>'+tags(r)+'</td>';
+      var hx=document.createElement("tr"); hx.className="hist"; hx.hidden=true;
+      var covers=r.hist.map(function(v,j){var isNew=r.ev&&j===r.hist.length-1;return '<div class="wk"><div class="cover'+(isNew?' new':'')+'"></div><span class="mono">'+weeks[j]+'</span>'+(isNew?'<span class="tag warn">новая обложка</span>':'')+'</div>'}).join("");
+      hx.innerHTML='<td colspan="8"><div class="hist-in">'+covers+'</div>'+spark(r.hist)+'</td>';
+      function tog(){hx.hidden=!hx.hidden}
+      tr.addEventListener("click",tog); tr.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();tog()}});
+      tb.appendChild(tr); tb.appendChild(hx);
+      if(i===0&&view==="all")hx.hidden=false;
+    });
+  }
+  document.querySelectorAll("[data-v]").forEach(function(b){b.addEventListener("click",function(){
+    view=b.dataset.v; document.querySelectorAll("[data-v]").forEach(function(o){o.setAttribute("aria-pressed",o===b?"true":"false")}); render();
+  })});
+  render();
+
+  // ---- 02: демо-галерея портала ----
+  var cards=[
+    {n:"Комод 4 ящика, 80 см",s:"Продавец А",rev:6.4,d:31,age:210,kg:412,gap:true},
+    {n:"Комод 5 ящиков, 60 см",s:"Продавец Б",rev:4.1,d:-12,age:640,kg:388},
+    {n:"Комод с дверцами, 120 см",s:"Продавец В",rev:3.6,d:58,age:45,kg:455,gap:true},
+    {n:"Комод узкий, 40 см",s:"Продавец Г",rev:2.2,d:-4,age:820,kg:301,look:true},
+    {n:"Комод 3 ящика, 100 см",s:"Продавец Д",rev:1.9,d:22,age:130,kg:420},
+    {n:"Комод на ножках, 90 см",s:"Продавец Е",rev:0.9,d:140,age:38,kg:510,look:true}
+  ];
+  var age="any", gal=document.getElementById("gal"), cnt=document.getElementById("gal-count");
+  function okAge(c){
+    if(age==="new")return c.age<90; if(age==="mid")return c.age>=90&&c.age<=365; if(age==="old")return c.age>365;
+    if(age==="gap")return !!c.gap; if(age==="look")return !!c.look; return true;
+  }
+  function renderGal(){
+    var list=cards.filter(okAge);
+    cnt.textContent="Оборот от порога 600 тыс ₽ за 28 дней · показано "+list.length+" из "+cards.length;
+    gal.innerHTML=list.map(function(c){
+      return '<div class="card"><div class="ph">фото</div><div class="c"><b>'+c.n+'</b><span style="color:var(--muted)">'+c.s+'</span><span class="mono">'+c.rev.toFixed(1).replace(".",",")+' млн ₽ <span class="'+(c.d<0?'down':'up')+'">'+sign(c.d)+'</span></span><span class="mono" style="color:var(--muted)">'+c.age+' дн · '+c.kg+' ₽/кг</span></div></div>';
+    }).join("");
+  }
+  document.querySelectorAll("[data-a]").forEach(function(b){b.addEventListener("click",function(){
+    age=b.dataset.a; document.querySelectorAll("[data-a]").forEach(function(o){o.setAttribute("aria-pressed",o===b?"true":"false")}); renderGal();
+  })});
+  renderGal();
+})();
+</script>
