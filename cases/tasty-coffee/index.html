@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tasty Coffee — кейс подбора замены</title>
+<style>
+:root{font:17px/1.55 system-ui,sans-serif;color:#171717;background:#f8f3ec;--ink:#171717;--emphasis:#534332;--line:#dedbd5;--cream:#fffaf3}
+*{box-sizing:border-box}body{margin:0}a{color:inherit}a:focus-visible,input:focus-visible{outline:3px solid #614a2c;outline-offset:4px}h1,h2,h3,p{margin:0}h1,h2{font-family:Georgia,serif;font-weight:400;line-height:1.02;letter-spacing:-.04em}h1{font-size:clamp(2.7rem,6vw,5.9rem);max-width:12ch}h2{font-size:clamp(2rem,4vw,3.5rem);margin-bottom:.55em}h3{line-height:1.25;margin-bottom:.35em}p+p{margin-top:.55em}.wrap{width:min(1120px,calc(100% - 40px));margin:auto}
+header{background:var(--ink);color:#fffaf3;padding:22px 0 65px}.bar{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;border-bottom:1px solid #dedbd5;padding-bottom:18px;font-size:.85rem}.bar a{margin-left:12px}.hero{display:grid;grid-template-columns:1.4fr 1fr;gap:36px;align-items:center;padding-top:42px}.hero p{max-width:45ch;margin:18px 0}.metric{background:#ffd68f;color:#171717;border-radius:48% 48% 12px 12px;padding:30px;text-align:center}.metric strong{display:block;font:clamp(5rem,12vw,10rem)/.9 Georgia,serif}.metric span{display:block;margin-top:12px}.button{display:inline-block;padding:10px 16px;border-radius:8px;background:#ffd68f;color:#171717;font-weight:750;text-decoration:none}.button:hover{background:#ffc568}
+main>section{padding:46px 0;border-bottom:1px solid var(--line)}.lead{max-width:75ch;margin-bottom:20px}.route,.research,.measure{display:grid;gap:12px}.route{grid-template-columns:repeat(4,1fr);list-style:none;padding:0;margin:20px 0}.route li,.tile,.measure article{padding:16px;background:var(--cream);border:1px solid var(--line);border-radius:12px}.route li{position:relative}.route li:not(:last-child)::after{content:"→";position:absolute;right:-12px;top:14px;z-index:1;color:var(--ink);font-weight:900}.route .drop{background:#f0e9dd;border:2px solid var(--emphasis)}.route .next{background:#eee8dc}.route b{display:block}.route small{display:block}.split{display:grid;grid-template-columns:1fr 1fr;gap:14px}.now,.proposal{padding:18px;border-radius:10px}.now{background:#f0e9dd}.proposal{background:#e8eee4}.research{grid-template-columns:repeat(3,1fr);list-style:none;padding:0;margin:20px 0}.tile strong{display:block;color:var(--emphasis);margin-bottom:6px}.measure{grid-template-columns:repeat(3,1fr);margin:18px 0}
+.demo{display:grid;grid-template-columns:minmax(225px,.65fr) minmax(0,1.35fr);gap:14px}.controls,.result{border:1px solid var(--line);background:var(--cream);border-radius:14px;padding:20px}.controls fieldset{border:0;padding:0;margin:14px 0 0}.controls legend{font-weight:700}.controls label{display:flex;gap:8px;padding:8px;border-radius:6px;cursor:pointer}.controls label:has(:checked){background:#ecebe7}.controls input{accent-color:var(--ink)}.result{min-height:250px}.result h3:first-child{font-family:Georgia,serif;font-size:1.85rem}.result article{margin-top:12px;padding:14px;border-radius:8px;background:#eee8dc}.result .button{margin-top:12px}.note,footer{font-size:.87rem;color:#55534f}footer{padding:18px 0 30px}footer a{display:inline-block;margin-right:16px}
+@media(max-width:740px){.hero,.demo,.split,.research,.measure{grid-template-columns:1fr}.route{grid-template-columns:1fr 1fr}.route li::after{display:none}.metric{border-radius:16px}.hero{gap:20px}header{padding-bottom:28px}main>section{padding:32px 0}}
+@media(max-width:340px){.route{grid-template-columns:1fr}}
+:root{color:#171717;background:#fff;--ink:#161616;--emphasis:#594731;--line:#dedbd5;--cream:#faf8f4}
+h1,h2,.result h3:first-child{font-family:"Arial Narrow","Bahnschrift Condensed",Arial,sans-serif;font-weight:800;letter-spacing:-.035em}
+header{background:#fff;color:#151515;padding-bottom:34px}.bar{border-color:var(--line)}.hero{grid-template-columns:1fr 1fr;align-items:stretch}.hero>div:first-child{align-self:center}.hero h1{max-width:16ch;font-size:clamp(2.5rem,5.5vw,5rem)}.hero h1 span{display:block;margin-top:.14em;color:var(--emphasis)}
+.hero-photo{margin:0;position:relative;min-height:405px;border-radius:20px;overflow:hidden;background:#512f1f}.hero-photo>img{width:100%;height:100%;position:absolute;object-fit:cover;object-position:center 47%}.hero-photo figcaption{position:absolute;bottom:14px;left:14px;right:14px;background:#fff9ef;color:#1b1510;padding:16px 20px;border-radius:12px;display:flex;align-items:center;gap:18px}.hero-photo strong{font:800 clamp(3rem,7vw,6rem)/.8 "Arial Narrow",Arial,sans-serif}
+.button,.detail-button{background:#171717;color:#fff;border:0;cursor:pointer}.button:hover,.detail-button:hover{background:#49413c}.detail-button{font:inherit;font-weight:650;border-radius:8px;padding:9px 13px}.detail-button:focus-visible,.to-top:focus-visible{outline:3px solid #614a2c;outline-offset:4px}.tile .detail-button{margin-top:12px}
+.route li{padding-top:14px}.route-icon{display:flex;align-items:center;justify-content:center;width:52px;height:52px;margin-bottom:12px;border-radius:50%;background:#eee6d9;font-size:1.45rem;color:#191715}.drop .route-icon{background:#594731;color:#fff;font-weight:800}.next .route-icon{background:#dee9d8}.route li:not(:last-child)::after{top:29px}
+.evidence-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}.evidence-grid figure{margin:0;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#f7f5f1}.evidence-grid img{width:100%;height:240px;object-fit:contain;display:block;background:#fff}.evidence-grid figcaption{padding:12px 16px}.actions{display:flex;flex-wrap:wrap;gap:10px}
+dialog{width:min(700px,calc(100% - 28px));max-height:85vh;border:1px solid #ccc2b8;border-radius:16px;padding:24px;color:#151515;background:#fff;box-shadow:0 20px 70px #0003}dialog::backdrop{background:#17131099}.dialog-head{display:flex;align-items:start;justify-content:space-between;gap:12px;margin-bottom:12px}.dialog-head h2{font-size:clamp(1.5rem,4vw,2.3rem);margin:0}.dialog-head button{font:inherit;cursor:pointer;flex:none;background:#f2efeb;border:0;border-radius:7px;padding:5px 11px}.dialog-body img{max-width:100%;max-height:360px;display:block;margin:12px auto;border:1px solid var(--line)}.dialog-body ul{padding-left:22px}.dialog-body a{overflow-wrap:anywhere}
+.result .product{display:grid;grid-template-columns:minmax(0,1fr) minmax(100px,145px);gap:12px;align-items:center}.result .product img{display:block;width:100%;border-radius:8px}.to-top{position:fixed;right:18px;bottom:18px;z-index:2;color:white;background:#171717;border-radius:28px;padding:9px 14px;font-weight:700;text-decoration:none;box-shadow:0 4px 16px #0003}.to-top:hover{background:#49413c}footer{padding-right:120px}
+@media(max-width:740px){.hero{grid-template-columns:1fr}.hero-photo{min-height:300px}.route li:not(:last-child)::after{display:none}.evidence-grid img{height:170px}}
+@media(max-width:430px){.evidence-grid,.result .product{grid-template-columns:1fr}.result .product img{max-width:120px}.to-top{right:10px;bottom:10px}}
+</style>
+</head>
+<body>
+<header id="top">
+  <div class="wrap">
+    <div class="bar"><strong>Независимое предложение для Tasty Coffee</strong><nav aria-label="Разделы кейса"><a href="#research">Исследование</a><a href="#demo">Прототип</a><a href="#pilot">Пилот</a></nav></div>
+    <div class="hero">
+      <div><h1>Покупатель ищет, что купить вместо Сертао.<span>Подбор возвращает ноль.</span></h1><p>Покупатель нажимает «Подобрать аналоги» на архивной карточке и попадает в пустую выдачу. Предлагаем прямо здесь показать доступный кофе с похожим вкусом.</p><a class="button" href="#demo">Попробовать новый подбор ↓</a></div>
+      <figure class="hero-photo"><img src="espresso-photo.jpg" alt="Чашка эспрессо среди обжаренных зёрен"><figcaption><strong>0</strong><span><b>сортов из 176</b><br>в выдаче для Сертао</span></figcaption></figure>
+    </div>
+  </div>
+</header>
+<main class="wrap">
+  <section id="journey">
+    <h2>Где обрывается подбор</h2>
+    <p class="lead">Фрагмент пути покупателя от архивной карточки до выбора другого кофе.</p>
+    <ol class="route" aria-label="Путь покупателя при поиске замены">
+      <li><span class="route-icon" aria-hidden="true">▤</span><b>Архивный лот</b><small>Покупатель открывает Сертао</small></li>
+      <li><span class="route-icon" aria-hidden="true">☷</span><b>Подобрать аналоги</b><small>Магазин применяет фильтры</small></li>
+      <li class="drop"><span class="route-icon" aria-hidden="true">0</span><b>0 совпадений</b><small>Узкое место зафиксировано</small></li>
+      <li class="next"><span class="route-icon" aria-hidden="true">↗</span><b>Перейти к другому кофе</b><small>Предлагаемый следующий шаг</small></li>
+    </ol>
+    <div class="split">
+      <article class="now"><h3>Как сейчас</h3><p>В пустой выдаче покупателю приходится самому менять фильтры или начинать поиск заново. Здесь он может уйти, так и не открыв доступный товар.</p></article>
+      <article class="proposal"><h3>Что предлагаем</h3><p>При нуле совпадений показать доступный лот и объяснить сходство и различия. Если подходящего лота нет, дать прямой переход в каталог эспрессо.</p></article>
+    </div>
+  </section>
+  <section id="research">
+    <h2>Как мы дошли до решения</h2>
+    <ol class="research">
+      <li class="tile"><strong>Проверили выдачу</strong>В брифе четыре архивных лота. Для Сертао на скриншоте зафиксировали 0 из 176.</li>
+      <li class="tile"><strong>Меняли по одному условию</strong>Добавили натуральную обработку, сняли ограничение по плотности, затем отдельно отключили фильтр обработки. Все три пробы дали ноль.</li>
+      <li class="tile"><strong>Сравнили кофе</strong>По брифу расширение кислотности показало Тайру. У неё другой вкусовой профиль. У Дахве совпали абрикос, тёмный шоколад и назначение для эспрессо.</li>
+      <li class="tile"><strong>Подтвердили доступность</strong>На 24 ноября 2026 года Дахве можно было заказать в Москве. Обработка отличается. Категории кислотности и плотности по шкалам карточки не установили.</li>
+      <li class="tile"><strong>Выбрали точку вмешательства</strong>Закрываем тупик в выдаче. Гипотеза о пользе для магазина — сохранить часть заказов с уже возникшим намерением купить.</li>
+      <li class="tile"><strong>Собрали и проверили прототип</strong>Показали обычную выдачу, рекомендацию с объяснением и пустой результат с переходом в каталог.</li>
+    </ol>
+    <div class="evidence-grid">
+      <figure><img src="sertao-evidence.webp" alt="Скриншот фильтров с результатом 0 сортов из 176" loading="lazy"><figcaption><button class="detail-button" type="button" data-detail="checks">Как проверяли выдачу</button></figcaption></figure>
+      <figure><img src="dahve-evidence.webp" alt="Пачка Руанда Дахве из карточки товара" loading="lazy"><figcaption><button class="detail-button" type="button" data-detail="comparison">Почему выбрали Дахве</button></figcaption></figure>
+    </div>
+    <div class="actions"><button class="detail-button" type="button" data-detail="decisions">Журнал решений Autopilot</button></div>
+  </section>
+  <section id="demo">
+    <h2>Попробуйте три сценария</h2>
+    <p class="lead">Переключите сценарий. Выдача обновляется сразу. Данные демонстрационные, наличие Дахве относится к дате исследования.</p>
+    <div class="demo">
+      <form class="controls" id="scenario-form">
+        <h3>Бразилия Сертао</h3><p class="note">Архивный лот для эспрессо</p>
+        <fieldset><legend>Сценарий подбора</legend>
+          <label><input type="radio" name="scenario" value="strict">Есть точное совпадение</label>
+          <label><input type="radio" name="scenario" value="similar" checked>Есть похожий кофе</label>
+          <label><input type="radio" name="scenario" value="empty">Подходящих вариантов нет</label>
+        </fieldset>
+      </form>
+      <section id="result" class="result" aria-label="Результат подбора" aria-live="polite" aria-atomic="true"><p>Для интерактивного просмотра включите JavaScript.</p></section>
+    </div>
+  </section>
+  <section id="pilot">
+    <h2>Проверим, сохраняет ли это заказы</h2>
+    <p class="lead">Предлагаем пилот на архивных карточках, где строгий подбор даёт ноль. Сравним текущий экран и экран с объяснимой заменой среди таких сессий. Частота пустых выдач, доля уходов и потерянная выручка пока неизвестны.</p>
+    <div class="measure">
+      <article><h3>Переход в карточку</h3><p>Продолжил ли покупатель выбор после пустой выдачи.</p></article>
+      <article><h3>Добавление в корзину</h3><p>Заинтересовал ли предложенный кофе настолько, чтобы его выбрать.</p></article>
+      <article><h3>Заказ и выручка</h3><p>Изменилась ли выручка на сессию с пустым строгим подбором.</p></article>
+    </div>
+    <p class="lead"><strong>Первый шаг пилота.</strong> Выбрать архивные карточки с пустой выдачей, проверить для них доступные альтернативы и установить базовую конверсию до запуска теста.</p>
+    <a class="button" href="#demo">Открыть сценарий подбора ↑</a>
+  </section>
+</main>
+<footer class="wrap"><div class="actions"><button class="detail-button" type="button" data-detail="spec">Спецификация</button><button class="detail-button" type="button" data-detail="acceptance">Приёмка</button></div></footer>
+<a class="to-top" href="#top" aria-label="Вернуться наверх" hidden>↑ Наверх</a>
+<dialog id="details" aria-labelledby="detail-title">
+  <div class="dialog-head"><h2 id="detail-title"></h2><form method="dialog"><button aria-label="Закрыть пояснение">✕</button></form></div>
+  <div class="dialog-body"></div>
+</dialog>
+<template id="checks"><h2>Как проверяли выдачу</h2>
+  <p>В брифе проверяли публичную выдачу Москвы без входа. Сертао дал ноль, Амбелла Пайл — три результата, Изабелла Рейс и Отавио Рейс — по одному. Выдачу по трём остальным карточкам независимо не перепроверили.</p>
+  <img src="sertao-evidence.webp" alt="Пустая выдача и исходные фильтры Сертао">
+  <p>Исходные условия: средняя кислотность, средняя плотность, обжарка для эспрессо, обработка «Фанки» и «Другой». Добавление натуральной обработки, снятие плотности и отключение обработки по отдельности оставили ноль. По брифу, расширение кислотности показало Тайру.</p>
+  <p><a href="https://shop.tastycoffee.ru/coffee/espresso-brazil-sertao">Карточка Сертао</a> · <a href="https://shop.tastycoffee.ru/coffee?filters=22,65,58,59,60,36,37,38,88,45">Исходная выдача</a></p>
+</template>
+<template id="comparison"><h2>Почему выбрали Дахве</h2>
+  <p><strong>Сертао.</strong> Эспрессо, абрикос, изюм, тёмный шоколад. Натуральный фанки.</p>
+  <p><strong>Дахве.</strong> Эспрессо, малина, слива, абрикос и тёмный шоколад. Натуральная обработка. На 24 ноября 2026 года карточка показывала заказ в Москве. Категории плотности и кислотности остаются неизвестными.</p>
+  <p><strong>Тайра.</strong> Эспрессо, ежевика, клубника, банан и кола. Инфьюзд. Вкусовое сходство с Сертао слабее.</p>
+  <p><a href="https://shop.tastycoffee.ru/coffee/espresso-rwanda-dahve-2026">Карточка Дахве</a> · <a href="https://shop.tastycoffee.ru/coffee/espresso-colombia-taira-2026">Карточка Тайры</a></p>
+</template>
+<template id="decisions"><h2>От наблюдения до прототипа</h2>
+  <ul><li>Зафиксировали пустую выдачу в конкретной точке контакта.</li><li>Проверили, помогает ли ослабление одного условия.</li><li>Сравнили карточки кофе и нашли доступный лот с объяснимым сходством.</li><li>Предложили показать похожий лот при нуле строгих совпадений.</li><li>Собрали три состояния и определили, что измерять в пилоте.</li></ul>
+  <p>Частота пустых выдач, уход покупателей и эффект на выручку остаются вопросами для пилота.</p>
+</template>
+<template id="spec"><h2>Спецификация прототипа</h2>
+  <ul><li>Есть строгие совпадения — показать обычную выдачу.</li><li>Строгих совпадений нет, есть похожий доступный кофе — показать рекомендацию со сходством и отличиями.</li><li>Подходящего кофе нет — показать пустое состояние со ссылкой в каталог эспрессо.</li></ul>
+  <p>Локальная демонстрация использует сохранённые данные. Правило автоматического подбора для всего каталога ещё предстоит проверить.</p>
+</template>
+<template id="acceptance"><h2>Приёмка прототипа</h2>
+  <p>Автоматическая проверка охватывает все три состояния, повторное переключение и адреса ссылок. Независимая приёмка первой версии прошла на чистой временной копии. В новой версии выдача обновляется сразу при выборе сценария.</p>
+  <p>Переходы на внешний сайт и внешний вид в реальном браузере отдельно не подтверждены.</p>
+</template>
+<script>
+const form = document.querySelector('#scenario-form');
+const result = document.querySelector('#result');
+const scenarios = new Map([
+  ['strict', '<h3>Точные совпадения</h3><p>1 результат</p><article><h4>Демонстрационный лот</h4><p>Эспрессо · средняя кислотность · средняя плотность</p></article>'],
+  ['similar', '<h3>0 точных совпадений</h3><p>Похожие по вкусу</p><article class="product"><div><h4>Руанда Дахве</h4><p><strong>Совпадает.</strong> Оба лота для эспрессо, с нотами абрикоса и тёмного шоколада.</p><p><strong>Отличается.</strong> У Дахве натуральная обработка, у Сертао — натуральный фанки.</p><p class="note">На 24 ноября 2026 года был доступен к заказу в Москве.</p><a class="button" href="https://shop.tastycoffee.ru/coffee/espresso-rwanda-dahve-2026">Смотреть карточку ↗</a></div><img src="dahve-evidence.webp" alt="Пачка Руанда Дахве"></article>'],
+  ['empty', '<h3>0 точных совпадений</h3><p>Близкую замену подобрать не удалось.</p><a class="button" href="https://shop.tastycoffee.ru/coffee/espresso-coffee">В каталог эспрессо ↗</a>']
+]);
+
+function showResult() {
+  const scenario = new FormData(form).get('scenario');
+  result.innerHTML = scenarios.get(scenario) ?? scenarios.get('empty');
+}
+
+form.addEventListener('change', showResult);
+showResult();
+</script>
+<script>
+const details = document.querySelector('#details');
+const title = document.querySelector('#detail-title');
+const body = details.querySelector('.dialog-body');
+const backToTop = document.querySelector('.to-top');
+
+function updateBackToTop() {
+  backToTop.hidden = window.scrollY < 80;
+}
+
+window.addEventListener('scroll', updateBackToTop, { passive: true });
+updateBackToTop();
+
+for (const trigger of document.querySelectorAll('[data-detail]')) {
+  trigger.addEventListener('click', () => {
+    const template = document.getElementById(trigger.dataset.detail);
+    const content = template.content.cloneNode(true);
+    const heading = content.querySelector('h2');
+    title.textContent = heading.textContent;
+    heading.remove();
+    body.replaceChildren(content);
+    details.showModal();
+  });
+}
+</script>
+</body>
+</html>
