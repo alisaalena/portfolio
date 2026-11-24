@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Разбор изменений товара · концепт для Ozon Seller</title>
+<style>
+  :root {color-scheme:light;--ink:#17243b;--muted:#4a5c76;--blue:#0759d7;--line:#d9e3f1;--bg:#f2f6fb;--white:#fff}
+  * {box-sizing:border-box}
+  body {margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,"Segoe UI",sans-serif}
+  main {width:min(1080px,calc(100% - 32px));margin:32px auto}
+  h1,h2,h3,p,dl,dd {margin:0}
+  h1 {font-size:clamp(30px,5vw,46px);letter-spacing:-.045em;line-height:1.12;margin:6px 0 12px}
+  h2 {font-size:19px;line-height:1.25}
+  h3 {font-size:16px;line-height:1.3}
+  small,.note {color:var(--muted);font-size:14px}
+  .headline p:last-child {max-width:64ch}
+  .layout {display:grid;grid-template-columns:minmax(0,1.42fr) minmax(0,1fr);gap:14px;margin-top:19px;align-items:start}
+  .panel {min-width:0;padding:clamp(13px,2.5vw,20px);border:1px solid var(--line);border-radius:15px;background:var(--white)}
+  .section-top {display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+  .events {display:flex;gap:7px;flex-wrap:wrap;margin:11px 0}
+  button,select {font:inherit;color:var(--ink);background:#fff;border:1px solid #b5c7e0;border-radius:8px;padding:7px 10px;min-height:40px;font-size:14px}
+  button {cursor:pointer;text-align:left}
+  button[aria-pressed=true] {background:#e9f2ff;color:#08429e;border-color:#4e8be5;font-weight:700}
+  :focus-visible {outline:3px solid #225ac5;outline-offset:3px}
+  .chart {display:grid;grid-template-columns:repeat(14,minmax(0,1fr));gap:3px;margin:6px 0 10px}
+  .day {min-width:0;position:relative;text-align:center;color:var(--muted);font-size:11px;font-variant-numeric:tabular-nums}
+  .day p {padding-top:3px}
+  .day[data-event=true] p {color:#123e8a;font-weight:750}
+  .track {display:flex;align-items:end;height:116px;padding:0 2px;border-bottom:1px solid #a8bdda}
+  .day[data-event=true] .track {border-left:1px dashed #4677c3}
+  .bar {width:100%;background:#a5b9d7;border-radius:3px 3px 0 0}
+  .selected-day .bar {background:var(--blue)}
+  .compare {display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:16px}
+  .compare div {padding:10px;background:#f3f7fd;border-radius:8px}
+  .compare dt {font-size:12px;color:var(--muted)}
+  .compare dd {font-size:22px;font-weight:750;font-variant-numeric:tabular-nums}
+  .assistant {border-top:4px solid var(--blue)}
+  .assistant h2 {margin-bottom:8px}
+  .assistant ol {margin:12px 0;padding-left:21px}
+  .assistant li + li {margin-top:8px}
+  .limits {padding-top:10px;border-top:1px solid var(--line)}
+  details {margin-top:14px}
+  summary {cursor:pointer;color:#08429e;font-weight:700}
+  table {width:100%;border-collapse:collapse;margin-top:8px;font-size:13px;font-variant-numeric:tabular-nums}
+  th,td {text-align:right;padding:5px 3px;border-bottom:1px solid var(--line)}
+  th:first-child,td:first-child {text-align:left}
+  footer {margin-top:15px;color:var(--muted);font-size:14px}
+  a {color:#08429e}
+  @media(max-width:760px) {.layout{grid-template-columns:minmax(0,1fr)} main{margin-top:20px}}
+  @media(max-width:400px) {.chart{gap:2px}.track{height:88px;padding-inline:1px}.day{font-size:10px}.compare dd{font-size:19px}table{font-size:11px}}
+</style>
+</head>
+<body>
+<main>
+  <header class="headline">
+    <p class="note">Концепт для Ozon Seller · вымышленные данные</p>
+    <h1>Разбор изменений товара</h1>
+    <p>На одной шкале — смена обложки, изменение цены и динамика воронки. Выберите событие, чтобы сравнить дни вокруг него.</p>
+  </header>
+  <div class="layout">
+    <section class="panel" aria-labelledby="timeline-title">
+      <div class="section-top"><h2 id="timeline-title">Товар А · 9–22 ноября</h2></div>
+      <div class="events" role="group" aria-label="Событие для разбора">
+        <button id="cover" type="button" aria-pressed="false">17 ноября · новая обложка</button>
+        <button id="price" type="button" aria-pressed="true">20 ноября · новая цена</button>
+      </div>
+      <div class="section-top">
+        <label for="metric">Показатель по дням</label>
+        <select id="metric">
+          <option value="cartRate">Корзина → заказ</option>
+          <option value="ctr">CTR</option>
+          <option value="impressions">Показы</option>
+          <option value="visits">Переходы</option>
+          <option value="carts">Корзины</option>
+          <option value="orders">Заказы</option>
+        </select>
+      </div>
+      <div id="chart" class="chart" aria-hidden="true"></div>
+      <p class="note">Синим выделены дни сравнения. Пунктиром отмечены 17 и 20 ноября.</p>
+      <dl class="compare" aria-live="polite">
+        <div><dt id="before-label"></dt><dd id="before-value"></dd></div>
+        <div><dt id="after-label"></dt><dd id="after-value"></dd></div>
+      </dl>
+    </section>
+    <aside class="panel assistant" aria-labelledby="answer-title">
+      <h2 id="answer-title">Что проверить</h2>
+      <div aria-live="polite">
+        <p id="observation"></p>
+        <ol id="actions"></ol>
+        <p class="note limits" id="limits"></p>
+      </div>
+    </aside>
+  </div>
+  <section class="panel" style="margin-top:14px" aria-labelledby="source-title">
+    <h2 id="source-title">Откуда взялись цифры</h2>
+    <p class="note">События — условный журнал изменений. Показатели — демонстрационный дневной ряд. Проценты за период считаются из сумм, одинаковые окна сравниваются целиком.</p>
+    <details>
+      <summary>Открыть дневной ряд</summary>
+      <table>
+        <thead><tr><th scope="col">Ноябрь</th><th scope="col">Показы</th><th scope="col">Переходы</th><th scope="col">Корзины</th><th scope="col">Заказы</th></tr></thead>
+        <tbody id="source"></tbody>
+      </table>
+    </details>
+  </section>
+  <footer>Алёна Алискерова · <a href="https://alisaalena.github.io/portfolio/">Портфолио</a></footer>
+</main>
+<script>
+  // Вымышленные наблюдения. Изменения вступают в силу с начала отмеченного дня.
+  const data = [
+    [9,1200,72,16,4],[10,1250,75,17,4],[11,1300,78,18,4],[12,1280,76,17,4],
+    [13,1275,77,18,4],[14,1240,74,17,4],[15,1300,78,18,4],[16,1250,75,18,4],
+    [17,1260,102,24,5],[18,1300,108,26,6],[19,1280,106,25,5],
+    [20,1300,107,25,2],[21,1280,106,26,2],[22,1310,109,27,2]
+  ].map(([day,impressions,visits,carts,orders])=>({day,impressions,visits,carts,orders}));
+  const events = {
+    cover:{before:[14,16],after:[17,19],metric:"ctr"},
+    price:{before:[17,19],after:[20,22],metric:"cartRate"}
+  };
+  const attributes = ["impressions","visits","carts","orders"];
+  const byId = id => document.getElementById(id);
+  const metric = byId("metric");
+  const fmt = new Intl.NumberFormat("ru-RU",{maximumFractionDigits:0});
+  const pct = new Intl.NumberFormat("ru-RU",{style:"percent",minimumFractionDigits:1,maximumFractionDigits:1});
+  let selected = "price";
+  const inRange = (day,[from,to]) => day>=from && day<=to;
+  const fmtRange = ([from,to]) => from+"–"+to+" ноября";
+  const value = (row,key) => key==="ctr" ? row.visits/row.impressions : key==="cartRate" ? row.orders/row.carts : row[key];
+  const print = (number,key) => key==="ctr" || key==="cartRate" ? pct.format(number) : fmt.format(number);
+  const sum = range => Object.fromEntries(attributes.map(key=>[
+    key,data.filter(row=>inRange(row.day,range)).reduce((total,row)=>total+row[key],0)
+  ]));
+
+  function show() {
+    const event = events[selected];
+    const key = metric.value;
+    const before = sum(event.before);
+    const after = sum(event.after);
+    const max = Math.max(...data.map(row=>value(row,key)));
+    const chart = byId("chart");
+    chart.replaceChildren();
+    for (const row of data) {
+      const day = document.createElement("div");
+      day.className = "day";
+      day.dataset.event = String(row.day===17 || row.day===20);
+      day.classList.toggle("selected-day",inRange(row.day,event.before)||inRange(row.day,event.after));
+      day.title = row.day+" ноября · "+print(value(row,key),key);
+      const track = document.createElement("div");
+      track.className = "track";
+      const bar = document.createElement("div");
+      bar.className = "bar";
+      bar.style.height = value(row,key)/max*100+"%";
+      track.append(bar);
+      const label = document.createElement("p");
+      label.textContent = row.day;
+      day.append(track,label);
+      chart.append(day);
+    }
+    for (const [prefix,range,totals] of [["before",event.before,before],["after",event.after,after]]) {
+      byId(prefix+"-label").textContent = fmtRange(range);
+      byId(prefix+"-value").textContent = print(value(totals,key),key);
+    }
+    for (const id of Object.keys(events)) byId(id).setAttribute("aria-pressed",String(id===selected));
+
+    const ctr = row => print(value(row,"ctr"),"ctr");
+    const cart = row => print(value(row,"cartRate"),"cartRate");
+    const steps = selected==="price" ? [
+      "Сначала сверить цену к оплате и даты акций. В примере цена выросла с 2 490 ₽ до 2 990 ₽, а снижение заказов видно после повышения.",
+      "Затем проверить доставку, наличие и состав трафика за те же дни. Если они тоже менялись, сравнить сопоставимые дни или продлить наблюдение."
+    ] : [
+      "Сначала проверить, сохранились ли места показа и доля рекламного трафика. Это могло повлиять на переходы вместе с обложкой.",
+      "После этого сравнить число заказов и конверсию по тем же дням. Следующий ценовой период начинается 20 ноября."
+    ];
+    byId("observation").textContent = selected==="price"
+      ? "После изменения цены CTR почти прежний ("+ctr(before)+" → "+ctr(after)+"), корзин "+before.carts+" → "+after.carts+", а конверсия из корзины в заказ снизилась с "+cart(before)+" до "+cart(after)+"."
+      : "После смены обложки CTR вырос с "+ctr(before)+" до "+ctr(after)+". В это окно повышение цены ещё не попало.";
+    byId("actions").replaceChildren(...steps.map(text=>{
+      const li=document.createElement("li");
+      li.textContent=text;
+      return li;
+    }));
+    byId("limits").textContent = "Последовательность событий помогает выбрать проверку. Причину изменения и чувствительность к цене эти данные ещё не доказывают.";
+  }
+
+  for (const id of Object.keys(events)) {
+    byId(id).addEventListener("click",()=>{
+      selected=id;
+      metric.value=events[id].metric;
+      show();
+    });
+  }
+  for (const row of data) {
+    const line=byId("source").insertRow();
+    for (const number of [row.day,...attributes.map(key=>row[key])]) line.insertCell().textContent=fmt.format(number);
+  }
+  metric.addEventListener("change",show);
+  show();
+</script>
+</body>
+</html>
