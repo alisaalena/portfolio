@@ -14,7 +14,7 @@ main>section{padding:46px 0;border-bottom:1px solid var(--line)}.lead{max-width:
 @media(max-width:340px){.route{grid-template-columns:1fr}}
 :root{color:#171717;background:#fff;--ink:#161616;--emphasis:#594731;--line:#dedbd5;--cream:#faf8f4}
 h1,h2,.result h3:first-child{font-family:"Arial Narrow","Bahnschrift Condensed",Arial,sans-serif;font-weight:800;letter-spacing:-.035em}
-header{background:#fff;color:#151515;padding-bottom:34px}.bar{border-color:var(--line)}.hero{grid-template-columns:1fr 1fr;align-items:stretch}.hero>div:first-child{align-self:center}
+header{background:#fff;color:#151515;padding-bottom:34px}.bar{border-color:var(--line)}.hero{grid-template-columns:1fr 1fr;align-items:stretch}.hero>div:first-child{align-self:center}.hero h1{max-width:16ch;font-size:clamp(2.5rem,5.5vw,5rem)}.hero h1 span{display:block;margin-top:.14em;color:var(--emphasis)}
 .hero-photo{margin:0;position:relative;min-height:405px;border-radius:20px;overflow:hidden;background:#512f1f}.hero-photo>img{width:100%;height:100%;position:absolute;object-fit:cover;object-position:center 47%}.hero-photo figcaption{position:absolute;bottom:14px;left:14px;right:14px;background:#fff9ef;color:#1b1510;padding:16px 20px;border-radius:12px;display:flex;align-items:center;gap:18px}.hero-photo strong{font:800 clamp(3rem,7vw,6rem)/.8 "Arial Narrow",Arial,sans-serif}
 .button,.detail-button{background:#171717;color:#fff;border:0;cursor:pointer}.button:hover,.detail-button:hover{background:#49413c}.detail-button{font:inherit;font-weight:650;border-radius:8px;padding:9px 13px}.detail-button:focus-visible,.to-top:focus-visible{outline:3px solid #614a2c;outline-offset:4px}.tile .detail-button{margin-top:12px}
 .route li{padding-top:14px}.route-icon{display:flex;align-items:center;justify-content:center;width:52px;height:52px;margin-bottom:12px;border-radius:50%;background:#eee6d9;font-size:1.45rem;color:#191715}.drop .route-icon{background:#594731;color:#fff;font-weight:800}.next .route-icon{background:#dee9d8}.route li:not(:last-child)::after{top:29px}
@@ -30,7 +30,7 @@ dialog{width:min(700px,calc(100% - 28px));max-height:85vh;border:1px solid #ccc2
   <div class="wrap">
     <div class="bar"><strong>Независимое предложение для Tasty Coffee</strong><nav aria-label="Разделы кейса"><a href="#research">Исследование</a><a href="#demo">Прототип</a><a href="#pilot">Пилот</a></nav></div>
     <div class="hero">
-      <div><h1>Любимый кофе закончился. Что купить вместо него?</h1><p>Покупатель уже ищет замену. Предлагаем дать ему следующий шаг прямо в выдаче «Подобрать аналоги», если фильтры вернули ноль.</p><a class="button" href="#journey">Посмотреть, где обрывается подбор ↓</a></div>
+      <div><h1>Покупатель ищет, что купить вместо Сертао.<span>Подбор возвращает ноль.</span></h1><p>Покупатель нажимает «Подобрать аналоги» на архивной карточке и попадает в пустую выдачу. Предлагаем прямо здесь показать доступный кофе с похожим вкусом.</p><a class="button" href="#demo">Попробовать новый подбор ↓</a></div>
       <figure class="hero-photo"><img src="espresso-photo.jpg" alt="Чашка эспрессо среди обжаренных зёрен"><figcaption><strong>0</strong><span><b>сортов из 176</b><br>в выдаче для Сертао</span></figcaption></figure>
     </div>
   </div>
