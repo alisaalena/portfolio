@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="ru">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Алёна Алискерова — бизнес-аналитика и AI-автоматизация</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #f8f6ef;
+  color: #22241f;
+  font: 17px/1.55 system-ui, sans-serif;
+}
+a { color: inherit; }
+a:focus-visible {
+  outline: 3px solid #795126;
+  outline-offset: 5px;
+}
+h1, h2, h3, p { margin: 0; }
+.wrap {
+  width: min(1100px, calc(100% - 40px));
+  margin: auto;
+}
+header, .links, .actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+header {
+  justify-content: space-between;
+  gap: 8px 20px;
+  padding: 24px 0;
+  border-bottom: 1px solid #dcd9cb;
+}
+header a { text-decoration: none; }
+header a:hover { text-decoration: underline; }
+.name { font-weight: 760; }
+.links { gap: 16px; }
+.actions { gap: 12px 20px; }
+.button {
+  display: inline-block;
+  padding: 12px 18px;
+  border-radius: 8px;
+  background: #253b2a;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 650;
+}
+.button:hover { background: #3a5540; }
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(215px, .38fr);
+  align-items: center;
+  gap: clamp(22px, 4.5vw, 64px);
+  padding: 64px 0;
+}
+h1, h2 {
+  font: 500 clamp(2.5rem, 6.6vw, 6rem)/1.04 Georgia, serif;
+  letter-spacing: -.06em;
+}
+h1 { margin-bottom: 18px; }
+.description {
+  max-width: 51ch;
+  margin-bottom: 24px;
+  font-size: clamp(1.0625rem, 1.5vw, 1.25rem);
+}
+.actions > a:not(.button) { text-underline-offset: 4px; }
+.note {
+  display: block;
+  transform: rotate(2deg);
+  padding: 22px;
+  background: #f1db9f;
+  color: #31281b;
+  box-shadow: 0 8px 16px #55472121;
+  text-decoration: none;
+}
+.note-title {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.note p { font: 1.32rem/1.32 Georgia, serif; }
+.note:hover { background: #eed28c; }
+.cases {
+  border-top: 1px solid #dcd9cb;
+  padding: 34px 0 50px;
+}
+.cases h2, .contact h2 {
+  font-size: clamp(2.15rem, 5vw, 4rem);
+  margin-bottom: 20px;
+}
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.card {
+  background: #fff;
+  border: 1px solid #e8e3d6;
+  border-radius: 15px;
+  overflow: hidden;
+  text-decoration: none;
+}
+.feature:hover h3, .case-link:hover h3 { text-decoration: underline; }
+.feature {
+  grid-column: 1/-1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.case-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+.case-cover {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 56/27;
+  object-fit: cover;
+}
+.case-link .caption { padding-bottom: 0; }
+.case-source { padding: 4px 20px 18px; }
+.case-site {
+  display: inline-block;
+  font-size: .875rem;
+  text-underline-offset: 3px;
+  color: #3d543e;
+}
+.case-link:focus-visible { outline-offset: -4px; }
+.photo {
+  min-height: 225px;
+  position: relative;
+}
+.photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  object-fit: cover;
+}
+.caption {
+  padding: 20px;
+  align-self: center;
+}
+.caption h3 {
+  line-height: 1.15;
+  margin: 5px 0 8px;
+}
+.caption small { color: #4c5f4f; }
+.contact {
+  padding: 34px 0 55px;
+  border-top: 1px solid #dcd9cb;
+}
+.contact p { margin-bottom: 16px; }
+
+@media (max-width: 680px) {
+  header { padding: 18px 0; }
+  .hero, .cards, .feature { grid-template-columns: 1fr; }
+  .hero { padding: 38px 0; }
+  .note { transform: none; }
+  .photo { min-height: 190px; }
+}
+</style>
+<header class="wrap"><a class="name" href="#home">Алёна Алискерова</a><nav class="links" aria-label="Разделы"><a href="#cases">Кейсы</a><a href="#contact">Контакты</a></nav></header>
+<main class="wrap" id="home">
+  <section class="hero" aria-labelledby="role">
+    <div>
+      <h1 id="role">Бизнес-аналитик</h1>
+      <p class="description">Разбираю процессы и клиентские сценарии в e-commerce, нахожу узкие места и проверяю решения на прототипах. Специализируюсь на AI-автоматизации.</p>
+      <div class="actions">
+        <a class="button" href="https://t.me/alisaalena">Написать в Telegram <span aria-hidden="true">↗</span></a>
+        <a href="#cases">Посмотреть кейсы <span aria-hidden="true">↓</span></a>
+      </div>
+    </div>
+    <a class="note" href="#tasty-coffee">
+      <span class="note-title">Tasty Coffee <span aria-hidden="true">↓</span></span>
+      <p>Подбор аналога архивного кофе показал ноль результатов.</p>
+    </a>
+  </section>
+  <section class="cases" id="cases"><h2>Избранные кейсы</h2><div class="cards">
+    <a class="card feature" id="tasty-coffee" href="../cases/tasty-coffee/"><div class="photo"><img src="assets/espresso-photo.jpg" alt="Чашка эспрессо на кофейных зёрнах"></div><div class="caption"><small>Исследование и прототип</small><h3>Tasty Coffee ↗</h3><p>Покупатель ищет замену, а подбор даёт ноль. Как помочь ему продолжить выбор.</p></div></a>
+    <article class="card">
+      <a class="case-link" href="../ecom-tech-pilot-ai.html"><img class="case-cover" src="assets/ecom-tech-pilot-cover.jpg" width="1120" height="540" alt="Демо ecom.tech: первый экран выбора задачи для AI-пилота"><div class="caption"><h3>Ecom Tech Pilot AI ↗</h3><p>Демо выбора задачи для AI-пилота по замеру рабочего дня.</p></div></a>
+      <div class="case-source"><a class="case-site" href="https://ecom.tech/">Сайт ecom.tech ↗</a></div>
+    </article>
+    <article class="card">
+      <a class="case-link" href="../ozon-seller-assistant.html"><img class="case-cover" src="assets/ozon-seller-cover.jpg" width="1120" height="540" alt="Концепт для Ozon Seller: график воронки до и после изменения товара"><div class="caption"><h3>Ozon Seller Assistant ↗</h3><p>Концепт разбора изменений товара для продавцов Ozon.</p></div></a>
+      <div class="case-source"><a class="case-site" href="https://seller.ozon.ru/">Сайт Ozon Seller ↗</a></div>
+    </article>
+  </div></section>
+  <section class="contact" id="contact"><h2>Есть задача? Давай обсудим</h2><p>Напиши, какой процесс или клиентский сценарий хочется улучшить.</p><a class="button" href="https://t.me/alisaalena">Написать в Telegram <span aria-hidden="true">↗</span></a></section>
+</main>
+</html>
